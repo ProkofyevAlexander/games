@@ -1,0 +1,33 @@
+{
+  "name": "games",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "config" : {
+    "port" : "8000"
+  },
+  "scripts": {
+    "postinstall": "bower install",
+    "preuninstall": "bower uninstall",
+
+    "_prestart": "npm install && gulp prepare_public",
+    "prestart": "gulp prepare_public",
+    "start": "node app.js | ./node_modules/.bin/bunyan",
+
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bunyan": "^1.8.0",
+    "express": "^4.13.4",
+    "file-stream-rotator": "0.0.6",
+    "jade": "^1.11.0",
+    "morgan": "^1.7.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^2.2.0",
+    "gulp-sourcemaps": "^1.6.0"
+  }
+}

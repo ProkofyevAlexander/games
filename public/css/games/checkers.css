@@ -1,0 +1,20 @@
+.game-checkers-playground {
+  width: 400px;
+  margin: 0 auto; }
+  .game-checkers-playground-row {
+    margin: 0;
+    height: 50px; }
+    .game-checkers-playground-row-tile {
+      margin: 0;
+      display: inline-block;
+      background-image: linear-gradient(to bottom right, white, gray);
+      height: 50px;
+      width: 50px; }
+    .game-checkers-playground-row-tile:nth-of-type(2n) {
+      background-image: linear-gradient(gray, black); }
+    .game-checkers-playground-row:nth-of-type(2n) .game-checkers-playground-row-tile {
+      background-image: linear-gradient(gray, black); }
+    .game-checkers-playground-row:nth-of-type(2n) .game-checkers-playground-row-tile:nth-of-type(2n) {
+      background-image: linear-gradient(to bottom right, white, gray); }
+
+/*# sourceMappingURL=../maps/games/checkers.css.map */

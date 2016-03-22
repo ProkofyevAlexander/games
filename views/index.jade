@@ -1,0 +1,27 @@
+doctype html
+html(ng-app="gamesApp")
+    head
+        title= 'Games'
+        link(rel='stylesheet' href='/css/layout.css')
+        link(rel='stylesheet' href='/css/chat.css')
+        link(rel='stylesheet' href='/css/games/checkers.css')
+        script(type='text/javascript', src='/angular/angular.min.js')
+        script(type='text/javascript', src='/js/controllers.js')
+    body
+        div(class='header')
+            div(class='header-logo')
+            div(class='header-nav')
+                div(class='header-nav-itm')
+                div(class='header-nav-itm')
+                div(class='header-nav-itm')
+        div(class='main')
+            div(class='main-box')
+                div(class='main-box-base')
+                    div(class='game-checkers-playground' ng-controller="CheckersPlaygroundCtrl")
+                        div(class='game-checkers-playground-row' ng-repeat="row in rows")
+                            div(class='game-checkers-playground-row-tile' ng-repeat="tile in row")
+                div(class='main-box-side')
+                    div(class='chat')
+                        div(class='chat-messages')
+                        div(class='chat-new-message')
+        div(class='footer') Footer
