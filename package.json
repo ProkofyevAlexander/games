@@ -3,20 +3,22 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "config" : {
-    "port" : "8000"
+  "config": {
+    "port": "8000"
   },
   "scripts": {
     "postinstall": "bower install",
     "preuninstall": "bower uninstall",
-
     "_prestart": "npm install && gulp prepare_public",
     "prestart": "gulp prepare_public",
     "start": "node app.js | ./node_modules/.bin/bunyan",
-
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "ProkofyevAlexander",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ProkofyevAlexander/games.git"
+  },
   "license": "ISC",
   "dependencies": {
     "bunyan": "^1.8.0",
