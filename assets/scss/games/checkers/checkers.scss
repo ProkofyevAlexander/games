@@ -1,0 +1,75 @@
+.game-checkers-playground {
+
+  width: 400px;
+  margin: 0 auto;
+
+  &-row {
+
+    margin: 0;
+    height: 50px;
+
+    &-tile {
+      position: relative;
+      margin: 0;
+      display: inline-block;
+      height: 50px;
+      width: 50px;
+
+      &._black {
+        background: {
+          color: #555;
+        };
+      }
+
+      &._white {
+        background: {
+          color: #eee;
+        };
+      }
+
+      &__checker {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        margin: -21px;
+        height: 40px;
+        width: 40px;
+        cursor: pointer;
+        border: {
+          radius: 50%;
+          style: solid;
+          width: 1px;
+          color: #555;
+        }
+
+        &:hover {
+          margin: -22px;
+          border: {
+            width: 2px;
+            color: #999;
+          }
+        }
+
+        &._black {
+          background: {
+            color: #111;
+          };
+        }
+
+        &._white {
+          background: {
+            color: #eee;
+          };
+        }
+
+        &._selected {
+          margin: -22px;
+          border: {
+            width: 2px;
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+}
