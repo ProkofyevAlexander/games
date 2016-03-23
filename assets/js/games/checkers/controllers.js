@@ -2,8 +2,14 @@ var gamesApp = angular.module('gamesApp', []);
 
 gamesApp.controller('CheckersPlaygroundCtrl', function ($scope) {
 
+    var PLAYER_BLACK = 'black',
+        PLAYER_WHITE = 'white',
+        TILE_BLACK = 'black',
+        TILE_WHITE = 'white';
+
     var x, y;
     $scope.rows = [];
+    $scope.current_player = PLAYER_BLACK;
 
     for (x = 0; x < 8; x++) {
 
@@ -17,15 +23,15 @@ gamesApp.controller('CheckersPlaygroundCtrl', function ($scope) {
             checker = '';
 
             type = (x + y) % 2 == 0
-                ? 'white'
-                : 'black';
+                ? TILE_WHITE
+                : TILE_BLACK;
 
-            if (type == 'black') {
+            if (type == TILE_BLACK) {
                 if (x < 3) {
-                    checker = 'black';
+                    checker = TILE_BLACK;
                 }
                 else if (x > 4) {
-                    checker = 'white';
+                    checker = PLAYER_WHITE;
                 }
             }
 
@@ -38,10 +44,17 @@ gamesApp.controller('CheckersPlaygroundCtrl', function ($scope) {
     }
 
     $scope.selectChecker = function(px, py) {
+
+        if ($scope.current_player != $scope.rows[px][py].checker) {
+            return false;
+        }
+
         for (x = 0; x < 8; x++) {
             for (y = 0; y < 8; y++) {
                 $scope.rows[x][y].selected = (px == x && py == y);
             }
         }
+
+        return true;
     };
 });

@@ -42,7 +42,7 @@
           color: #555;
         }
 
-        &:hover {
+        &:not(._inactive):not(._selected):hover {
           margin: -22px;
           border: {
             width: 2px;
@@ -72,6 +72,10 @@
 
         &._white._selected {
           border-color: #111;
+        }
+
+        &._inactive {
+          opacity: .7;
         }
       }
     }
