@@ -2,15 +2,17 @@ var gamesApp = angular.module('gamesApp', []);
 
 gamesApp.controller('CheckersPlaygroundCtrl', function ($scope) {
 
-    var rows = [];
+    var x, y;
+    $scope.rows = [];
 
-    for (var x = 0; x < 8; x++) {
+    for (x = 0; x < 8; x++) {
 
-        var row = [],
-            type,
+        $scope.rows[x] = [];
+
+        var type,
             checker;
 
-        for (var y = 0; y < 8; y++) {
+        for (y = 0; y < 8; y++) {
 
             checker = '';
 
@@ -27,19 +29,19 @@ gamesApp.controller('CheckersPlaygroundCtrl', function ($scope) {
                 }
             }
 
-            row.push({
+            $scope.rows[x][y] = {
                 type: type,
                 checker: checker,
                 selected: false
-            });
+            };
         }
-
-        rows.push(row);
     }
 
-    $scope.rows = rows;
-
-    $scope.selectChecker = function() {
-        
+    $scope.selectChecker = function(px, py) {
+        for (x = 0; x < 8; x++) {
+            for (y = 0; y < 8; y++) {
+                $scope.rows[x][y].selected = (px == x && py == y);
+            }
+        }
     };
 });
