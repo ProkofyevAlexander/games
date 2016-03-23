@@ -27,6 +27,21 @@
         };
       }
 
+      &._available:before {
+        content: " ";
+        position: absolute;
+        top: 1px;
+        right: 1px;
+        bottom: 1px;
+        left: 1px;
+        z-index: 1;
+        border: {
+          style: solid;
+          width: 1px;
+          color: #999;
+        };
+      }
+
       &__checker {
         position: relative;
         top: 50%;

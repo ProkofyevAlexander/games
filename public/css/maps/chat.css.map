@@ -1,1 +1,0 @@
-{"version":3,"file":"chat.css","sources":["chat.scss"],"sourcesContent":[".chat {\r\n  width: 100%;\r\n\r\n  &-messages {\r\n    height: 40px;\r\n    background-color: #fff;\r\n  }\r\n}"],"mappings":"AAAA,KAAK,CAAC;EACJ,KAAK,EAAE,IAAK,GAMb;EAPD,cAAK,CAGQ;IACT,MAAM,EAAE,IAAK;IACb,gBAAgB,EAAE,IAAK,GACxB","names":[],"sourceRoot":"/source/"}
