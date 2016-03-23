@@ -7,7 +7,8 @@ gamesApp.controller('CheckersPlaygroundCtrl', function ($scope) {
         TILE_BLACK = 'black',
         TILE_WHITE = 'white';
 
-    var x, y;
+    var x, y,
+        active_selected_x, active_selected_y;
     $scope.rows = [];
     $scope.current_player = PLAYER_BLACK;
 
@@ -56,11 +57,15 @@ gamesApp.controller('CheckersPlaygroundCtrl', function ($scope) {
 
                 if ($scope.rows[x][y].type == TILE_WHITE) continue;
 
-                $scope.rows[x][y].checker.selected = (selected_x == x && selected_y == y);
+                $scope.rows[x][y].checker.selected = false;
                 $scope.rows[x][y].available = false;
             }
         }
 
+        active_selected_x = selected_x;
+        active_selected_y = selected_y;
+
+        $scope.rows[selected_x][selected_y].checker.selected = true;
 
         var directions = [];
 
@@ -94,6 +99,29 @@ gamesApp.controller('CheckersPlaygroundCtrl', function ($scope) {
             } while (current_checker.king && !stop);
 
         });
+
+        return true;
+    };
+
+    $scope.moveChecker = function (selected_x, selected_y) {
+
+        if (!$scope.rows[selected_x][selected_y].available) return false;
+
+        $scope.rows[selected_x][selected_y].checker.type = $scope.rows[active_selected_x][active_selected_y].checker.type;
+        $scope.rows[selected_x][selected_y].checker.king = $scope.rows[active_selected_x][active_selected_y].checker.king;
+        $scope.rows[selected_x][selected_y].checker.selected = $scope.rows[active_selected_x][active_selected_y].checker.selected;
+
+        $scope.rows[active_selected_x][active_selected_y].checker.type = null;
+
+        for (x = 0; x < 8; x++) {
+
+            for (y = 0; y < 8; y++) {
+
+                if ($scope.rows[x][y].type == TILE_WHITE) continue;
+
+                $scope.rows[x][y].available = false;
+            }
+        }
 
         return true;
     };
