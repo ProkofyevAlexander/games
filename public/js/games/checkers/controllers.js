@@ -1,3 +1,4 @@
+// named
 var gamesApp = angular.module('gamesApp', []);
 
 gamesApp.controller('CheckersPlaygroundCtrl', function ($scope) {
@@ -7,121 +8,291 @@ gamesApp.controller('CheckersPlaygroundCtrl', function ($scope) {
         TILE_BLACK = 'black',
         TILE_WHITE = 'white';
 
-    var x, y,
-        active_selected_x, active_selected_y;
+    var Direction = function (x, y) {
+
+        var _self = this;
+
+        var _x = x,
+            _y = y;
+
+        _self.getX = function () {
+            return _x;
+        };
+
+        _self.getY = function () {
+            return _y;
+        };
+
+    };
+
+    var Coordinates = function (x, y) {
+
+        var _self = this;
+
+        var _x = x,
+            _y = y;
+
+        _self.getX = function () {
+            return _x;
+        };
+
+        _self.getY = function () {
+            return _y;
+        };
+
+        _self.clone = function () {
+            return new Coordinates(_x, _y);
+        };
+
+        _self.addDirection = function (direction) {
+            _x += direction.getX();
+            _y += direction.getY();
+        };
+
+        _self.isValid = function () {
+            return _x > -1 && _x < 8 && _y > -1 && _y < 8;
+        };
+    };
+
+    var Checker = function (type) {
+
+        var _self = this;
+
+        var _type = type,
+            _king = false,
+            _selected = false;
+
+        _self.getType = function () {
+            return _type;
+        };
+
+        _self.setKing = function (king) {
+            _king = king;
+            return _self;
+        };
+
+        _self.isKing = function () {
+            return _king;
+        };
+
+        _self.setSelected = function (selected) {
+            _selected = selected;
+            return _self;
+        };
+
+        _self.isSelected = function () {
+            return _selected;
+        };
+
+        _self.clone = function () {
+
+            var checker = new Checker(_type);
+            checker
+                .setSelected(_selected)
+                .setKing(_king);
+            return checker;
+        };
+    };
+
+    var Tile = function (coordinates, type) {
+
+        var _self = this;
+
+        var _coordinates = coordinates,
+            _type = type,
+            _checker = null,
+            _available = false;
+
+        _self.getCoordinates = function () {
+            return _coordinates;
+        };
+
+        _self.getType = function () {
+            return _type;
+        };
+
+        _self.setChecker = function (checker) {
+            _checker = checker;
+            return _self;
+        };
+
+        _self.getChecker = function () {
+            return _checker;
+        };
+
+        _self.setAvailable = function (available) {
+            _available = available;
+            return _self;
+        };
+
+        _self.isAvailable = function () {
+            return _available;
+        };
+    };
+
+    var _selected_tile = null;
+
     $scope.rows = [];
     $scope.current_player = PLAYER_BLACK;
 
-    for (x = 0; x < 8; x++) {
+    var setTile = function (coordinates, tile) {
+        return $scope.rows[coordinates.getX()][coordinates.getY()] = tile;
+    };
+
+    var getTile = function (coordinates) {
+        return $scope.rows[coordinates.getX()][coordinates.getY()];
+    };
+
+    for (var x = 0; x < 8; x++) {
 
         $scope.rows[x] = [];
 
-        var tile_type,
-            checker;
+        for (var y = 0; y < 8; y++) {
 
-        for (y = 0; y < 8; y++) {
+            var coordinates = new Coordinates(x, y);
 
-            checker = {
-                type: null,
-                king: false,
-                selected: false
-            };
+            var tile = new Tile(coordinates, ((x + y) % 2 == 0 ? TILE_WHITE : TILE_BLACK));
 
-            tile_type = (x + y) % 2 == 0
-                ? TILE_WHITE
-                : TILE_BLACK;
+            if (tile.getType() == TILE_BLACK) {
 
-            if (tile_type == TILE_BLACK) {
+                var checker = null;
 
-                if (x < 3) checker.type = PLAYER_BLACK;
-                else if (x > 4) checker.type = PLAYER_WHITE;
+                if (x < 3) {
+                    checker = new Checker(PLAYER_BLACK);
+                }
+                else if (x > 4) {
+                    checker = new Checker(PLAYER_WHITE);
+                }
+
+                tile.setChecker(checker);
             }
 
-            $scope.rows[x][y] = {
-                type: tile_type,
-                checker: checker,
-                available: false
-            };
+            setTile(coordinates, tile);
         }
     }
 
-    $scope.selectChecker = function (selected_x, selected_y) {
+    $scope.selectChecker = function (selected_tile) {
 
-        var current_checker = $scope.rows[selected_x][selected_y].checker;
+        var selected_checker = selected_tile.getChecker();
 
-        if ($scope.current_player != current_checker.type) return false;
+        if (selected_checker == null || selected_checker.getType() != $scope.current_player) return false;
 
-        for (x = 0; x < 8; x++) {
+        _selected_tile = selected_tile;
 
-            for (y = 0; y < 8; y++) {
+        for (var x = 0; x < 8; x++) {
 
-                if ($scope.rows[x][y].type == TILE_WHITE) continue;
+            for (var y = 0; y < 8; y++) {
 
-                $scope.rows[x][y].checker.selected = false;
-                $scope.rows[x][y].available = false;
+                var tile = getTile(new Coordinates(x, y));
+
+                if (tile.getType() == TILE_WHITE) continue;
+
+                if (tile.getChecker() != null) {
+                    tile.getChecker().setSelected(false);
+                }
+
+                tile.setAvailable(false);
             }
         }
 
-        active_selected_x = selected_x;
-        active_selected_y = selected_y;
-
-        $scope.rows[selected_x][selected_y].checker.selected = true;
+        selected_checker.setSelected(true);
 
         var directions = [];
 
-        if (current_checker.king || current_checker.type == PLAYER_BLACK) {
-            directions.push([1, -1]);
-            directions.push([1, 1]);
+        if (selected_checker.isKing() || selected_checker.getType() == PLAYER_BLACK) {
+            directions.push(new Direction(1, -1));
+            directions.push(new Direction(1, 1));
         }
 
-        if (current_checker.king || current_checker.type == PLAYER_WHITE) {
-            directions.push([-1, -1]);
-            directions.push([-1, 1]);
+        if (selected_checker.isKing() || selected_checker.getType() == PLAYER_WHITE) {
+            directions.push(new Direction(-1, -1));
+            directions.push(new Direction(-1, 1));
         }
+
+        var step_coordinates = [],
+            exists_eat_directions = false;
 
         directions.forEach(function (direction) {
 
-            var check_x = selected_x,
-                check_y = selected_y,
+            var coordinates_for_check = _selected_tile.getCoordinates().clone(),
                 stop = false;
 
             do {
 
-                check_x += direction[0];
-                check_y += direction[1];
+                coordinates_for_check.addDirection(direction);
 
-                stop = check_x < 0 || check_x > 7 || check_y < 0 || check_y > 7;
+                stop = !coordinates_for_check.isValid();
 
                 if (!stop) {
-                    $scope.rows[check_x][check_y].available = $scope.rows[check_x][check_y].checker.type == null;
+
+                    var tile_for_check = getTile(coordinates_for_check);
+
+                    var tile_is_busy = tile_for_check.getChecker() != null;
+
+                    if (!tile_is_busy) {
+                        step_coordinates.push(coordinates_for_check);
+                    }
+
+                    if (tile_is_busy && tile_for_check.getChecker().getType() != $scope.current_player) {
+
+                        coordinates_for_check.addDirection(direction);
+
+                        stop = !coordinates_for_check.isValid();
+
+                        if (!stop) {
+
+                            tile_for_check = getTile(coordinates_for_check);
+
+                            tile_is_busy = tile_for_check.getChecker() != null;
+                            tile_for_check.setAvailable(!tile_is_busy);
+
+                            exists_eat_directions = exists_eat_directions || !tile_is_busy;
+                        }
+                    }
                 }
 
-            } while (current_checker.king && !stop);
+                stop = stop || !selected_checker.isKing();
+
+            } while (!stop);
 
         });
+
+        if (!exists_eat_directions) {
+            step_coordinates.forEach(function (coordinates) {
+                getTile(coordinates).setAvailable(true);
+            })
+        }
 
         return true;
     };
 
-    $scope.moveChecker = function (selected_x, selected_y) {
+    $scope.moveChecker = function (tile) {
 
-        if (!$scope.rows[selected_x][selected_y].available) return false;
+        var selected_checker = _selected_tile.getChecker();
 
-        $scope.rows[selected_x][selected_y].checker.type = $scope.rows[active_selected_x][active_selected_y].checker.type;
-        $scope.rows[selected_x][selected_y].checker.king = $scope.rows[active_selected_x][active_selected_y].checker.king;
-        $scope.rows[selected_x][selected_y].checker.selected = $scope.rows[active_selected_x][active_selected_y].checker.selected;
+        if (selected_checker == null || !tile.isAvailable()) return false;
 
-        $scope.rows[active_selected_x][active_selected_y].checker.type = null;
+        selected_checker.setSelected(false);
 
-        for (x = 0; x < 8; x++) {
+        tile.setChecker(selected_checker.clone());
 
-            for (y = 0; y < 8; y++) {
+        _selected_tile.setChecker(null);
 
-                if ($scope.rows[x][y].type == TILE_WHITE) continue;
+        for (var x = 0; x < 8; x++) {
 
-                $scope.rows[x][y].available = false;
+            for (var y = 0; y < 8; y++) {
+
+                tile = getTile(new Coordinates(x, y));
+
+                if (tile.getType() == TILE_WHITE) continue;
+
+                tile.setAvailable(false);
             }
         }
+
+        $scope.current_player = $scope.current_player == PLAYER_BLACK
+            ? PLAYER_WHITE
+            : PLAYER_BLACK;
 
         return true;
     };
