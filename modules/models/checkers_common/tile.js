@@ -1,4 +1,4 @@
-module.exports = class Tile {
+module.exports = class {
 
     static getTypeBlack() {
         return 'black';
