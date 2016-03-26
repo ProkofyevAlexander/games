@@ -7,9 +7,10 @@ var source_maps = require('gulp-sourcemaps');
 var babel = require('gulp-babel');
 //var concat = require('gulp-concat');
 
-var production = typeof process.env.npm_package_config_production != 'undefined'
-    ? process.env.npm_package_config_production
-    : false;
+//linux & mac: export NODE_ENV=production
+//windows: set NODE_ENV=production
+
+var production = process.env.NODE_ENV === 'production';
 
 var src_path_sass = path.join(__dirname, '/assets/scss/**/*.scss'),
     src_path_es2015 = path.join(__dirname, '/assets/es2015/**/*.js');

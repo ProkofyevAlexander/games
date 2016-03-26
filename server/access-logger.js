@@ -1,4 +1,5 @@
 var fs = require('fs'),
+    path = require('path'),
     morgan = require('morgan'),
     fileStreamRotator = require('file-stream-rotator'),
     config = require('./config');
@@ -6,7 +7,7 @@ var fs = require('fs'),
 // create a rotating write stream
 var access_log_stream = fileStreamRotator.getStream({
     date_format: 'YYYYMMDD',
-    filename: config.logDir() + '/access-%DATE%.log',
+    filename: path.join(config.dir.log, 'access-%DATE%.log'),
     frequency: 'daily',
     verbose: false
 });

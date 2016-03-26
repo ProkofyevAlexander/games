@@ -3,17 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "config": {
-    "port": "8000",
-    "production": false
-  },
   "scripts": {
     "postinstall": "bower install",
     "preuninstall": "bower uninstall",
     "_prestart": "npm install && gulp prepare_public",
     "prestart": "gulp prepare_public",
-    "start": "node app.js | ./node_modules/.bin/bunyan",
+    "start": "node ./server/server.js | ./node_modules/.bin/bunyan",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "5"
   },
   "author": "ProkofyevAlexander",
   "repository": {

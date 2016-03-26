@@ -17,7 +17,7 @@ router.get('/:lng/:page?', function (req, res, next) {
     var lng = req.params['lng'],
         page = req.params['page'];
 
-    //logger.debug({lng: lng, page: page, type_of_page: (typeof page)}, __filename + ':20');
+    //log.debug({lng: lng, page: page, type_of_page: (typeof page)}, __filename + ':20');
 
     if (!languages.hasOwnProperty(lng)) {
         next('404');
