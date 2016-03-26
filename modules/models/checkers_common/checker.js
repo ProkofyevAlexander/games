@@ -1,5 +1,13 @@
 module.exports = class Checker {
 
+    static getTypeBlack() {
+        return 'black';
+    }
+
+    static getTypeWhite() {
+        return 'white';
+    }
+
     constructor(type) {
         this.type = type;
         this.king = false;

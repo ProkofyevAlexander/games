@@ -1,5 +1,13 @@
 module.exports = class Tile {
 
+    static getTypeBlack() {
+        return 'black';
+    }
+
+    static getTypeWhite() {
+        return 'white';
+    }
+
     constructor(coordinates, type) {
         this.coordinates = coordinates;
         this.type = type;

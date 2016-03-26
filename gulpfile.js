@@ -14,7 +14,7 @@ var PRODUCTION = process.env.NODE_ENV === 'production';
 
 var SRC_PATH_SASS = path.join(__dirname, 'assets/scss/**/*.scss'),
     DEST_PATH_SASS = path.join(__dirname, 'public/css'),
-    SRC_PATH_SCRIPTS = path.join(__dirname, 'modules/angular/controller/*.js');
+    SRC_PATH_SCRIPTS = path.join(__dirname, 'modules/**/*.js');
 
 gulp.task('sass', function () {
 
@@ -40,7 +40,7 @@ gulp.task('scripts', function() {
     gulp.src('modules/angular/controllers.js')
         .pipe(browserify({
             insertGlobals : false,
-            debug : !PRODUCTION
+            debug : false && !PRODUCTION
         }))
         .pipe(babel())
         .pipe(gulp.dest('public/js'))
