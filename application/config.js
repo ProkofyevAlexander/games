@@ -1,10 +1,10 @@
 var fs = require('fs'),
     path = require('path');
 
-var base_dir = path.normalize(__dirname + '/..');
+var base_dir = path.join(__dirname, '..');
 
 var logDir = function () {
-    return base_dir + '/log';
+    return path.join(base_dir, 'log');
 };
 
 exports.serverPort = function () {
@@ -21,15 +21,15 @@ exports.baseDir = function () {
 exports.logDir = logDir;
 
 exports.viewDir = function () {
-    return base_dir + '/views';
+    return path.join(base_dir, 'views');
 };
 
 exports.bowerDir = function () {
-    return base_dir + '/bower_components';
+    return path.join(base_dir, 'bower_components');
 };
 
 exports.publicDir = function () {
-    return base_dir + '/public';
+    return path.join(base_dir, 'public');
 };
 
 // ensure logger directory exists

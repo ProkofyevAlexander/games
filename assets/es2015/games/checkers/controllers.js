@@ -8,127 +8,130 @@ gamesApp.controller('CheckersPlaygroundCtrl', function ($scope) {
         TILE_BLACK = 'black',
         TILE_WHITE = 'white';
 
-    var Direction = function (x, y) {
+    class Direction {
 
-        var _self = this;
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+        }
 
-        var _x = x,
-            _y = y;
-
-        _self.getX = function () {
-            return _x;
+        getX() {
+            return this.x;
         };
 
-        _self.getY = function () {
-            return _y;
+        getY() {
+            return this.y;
+        };
+    }
+
+    class Coordinates {
+
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        getX() {
+            return this.x;
         };
 
-    };
-
-    var Coordinates = function (x, y) {
-
-        var _self = this;
-
-        var _x = x,
-            _y = y;
-
-        _self.getX = function () {
-            return _x;
+        getY() {
+            return this.y;
         };
 
-        _self.getY = function () {
-            return _y;
+        clone() {
+            return new Coordinates(this.x, this.y);
         };
 
-        _self.clone = function () {
-            return new Coordinates(_x, _y);
+        addDirection(direction) {
+            this.x += direction.getX();
+            this.y += direction.getY();
         };
 
-        _self.addDirection = function (direction) {
-            _x += direction.getX();
-            _y += direction.getY();
+        isValid() {
+            return this.x > -1 && this.x < 8 && this.y > -1 && this.y < 8;
+        };
+    }
+
+    class Checker {
+
+        constructor(type) {
+            this.type = type;
+            this.king = false;
+            this.selected = false;
+        }
+
+        getType() {
+            return this.type;
         };
 
-        _self.isValid = function () {
-            return _x > -1 && _x < 8 && _y > -1 && _y < 8;
-        };
-    };
-
-    var Checker = function (type) {
-
-        var _self = this;
-
-        var _type = type,
-            _king = false,
-            _selected = false;
-
-        _self.getType = function () {
-            return _type;
+        setKing(king) {
+            this.king = king;
+            return this;
         };
 
-        _self.setKing = function (king) {
-            _king = king;
-            return _self;
+        isKing() {
+            return this.king;
         };
 
-        _self.isKing = function () {
-            return _king;
+        setSelected(selected) {
+            this.selected = selected;
+            return this;
         };
 
-        _self.setSelected = function (selected) {
-            _selected = selected;
-            return _self;
+        isSelected() {
+            return this.selected;
         };
 
-        _self.isSelected = function () {
-            return _selected;
-        };
+        clone() {
 
-        _self.clone = function () {
+            var checker = new Checker(this.type);
 
-            var checker = new Checker(_type);
             checker
-                .setSelected(_selected)
-                .setKing(_king);
+                .setSelected(this.selected)
+                .setKing(this.king);
+
+            //return Object.assign({}, this)
+
             return checker;
         };
-    };
+    }
 
-    var Tile = function (coordinates, type) {
+    class Tile {
 
-        var _self = this;
+        constructor(coordinates, type) {
+            this.coordinates = coordinates;
+            this.type = type;
+            this.checker = null;
+            this.available = false;
+        }
 
-        var _coordinates = coordinates,
-            _type = type,
-            _checker = null,
-            _available = false;
-
-        _self.getCoordinates = function () {
-            return _coordinates;
+        getCoordinates() {
+            return this.coordinates;
         };
 
-        _self.getType = function () {
-            return _type;
+        getType() {
+            return this.type;
         };
 
-        _self.setChecker = function (checker) {
-            _checker = checker;
-            return _self;
+        setChecker(checker) {
+            this.checker = checker;
+            return this;
         };
 
-        _self.getChecker = function () {
-            return _checker;
+        getChecker() {
+            return this.checker;
         };
 
-        _self.setAvailable = function (available) {
-            _available = available;
-            return _self;
+        setAvailable(available) {
+            this.available = available;
+            return this;
         };
 
-        _self.isAvailable = function () {
-            return _available;
+        isAvailable() {
+            return this.available;
         };
-    };
+    }
 
     var _selected_tile = null;
 
@@ -212,7 +215,7 @@ gamesApp.controller('CheckersPlaygroundCtrl', function ($scope) {
         var step_coordinates = [],
             exists_eat_directions = false;
 
-        directions.forEach(function (direction) {
+        directions.forEach(direction => {
 
             var coordinates_for_check = _selected_tile.getCoordinates().clone(),
                 stop = false;

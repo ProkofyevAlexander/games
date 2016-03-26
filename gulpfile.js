@@ -1,27 +1,68 @@
 'use strict';
 
+var path = require('path');
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var source_maps = require('gulp-sourcemaps');
+var babel = require('gulp-babel');
+//var concat = require('gulp-concat');
+
+var production = typeof process.env.npm_package_config_production != 'undefined'
+    ? process.env.npm_package_config_production
+    : false;
+
+var src_path_sass = path.join(__dirname, '/assets/scss/**/*.scss'),
+    src_path_es2015 = path.join(__dirname, '/assets/es2015/**/*.js');
 
 gulp.task('sass', function () {
-    return gulp
-        .src(__dirname + '/assets/scss/**/*.scss')
-        .pipe(sass({}).on('error', sass.logError))
-        .pipe(gulp.dest(__dirname + '/public/css'));
+
+    var dest_path = path.join(__dirname, '/public/css');
+
+    if (production) {
+
+        return gulp
+            .src(src_path_sass)
+            .pipe(source_maps.init())
+            .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+            .pipe(source_maps.write('.'))
+            .pipe(gulp.dest(dest_path));
+    }
+    else {
+
+        return gulp
+            .src(src_path_sass)
+            .pipe(sass({}).on('error', sass.logError))
+            .pipe(gulp.dest(dest_path));
+
+    }
 });
 
-gulp.task('sass:production', function () {
-    return gulp
-        .src(__dirname + '/assets/scss/**/*.scss')
-        .pipe(source_maps.init())
-        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
-        .pipe(source_maps.write('./maps'))
-        .pipe(gulp.dest(__dirname + '/public/css'));
+gulp.task('es2015', function () {
+
+    var dest_path = path.join(__dirname, '/public/js');
+
+    if (production) {
+
+        return gulp.src(src_path_es2015)
+            .pipe(source_maps.init())
+            .pipe(babel())
+            //.pipe(concat("all.js"))
+            .pipe(source_maps.write('.'))
+            .pipe(gulp.dest(dest_path));
+
+    }
+    else {
+
+        return gulp.src(src_path_es2015)
+            .pipe(babel())
+            .pipe(gulp.dest(dest_path));
+    }
 });
 
-gulp.task('prepare_public', ['sass']);
 
-gulp.task('default', ['sass'], function () {
-    gulp.watch(__dirname + '/assets/scss/**/*.scss', ['sass']);
+gulp.task('prepare_public', ['sass', 'es2015']);
+
+gulp.task('default', ['sass', 'es2015'], function () {
+    gulp.watch(src_path_sass, ['sass']);
+    gulp.watch(src_path_es2015, ['es2015']);
 });
