@@ -1,7 +1,7 @@
 var Coordinates = require('./coordinates'),
     Tile = require('./tile');
 
-module.exports = class {
+module.exports = class Playground {
 
     constructor() {
 

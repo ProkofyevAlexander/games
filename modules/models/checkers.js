@@ -4,7 +4,7 @@ var Playground = require('./checkers_common/playground'),
     Tile = require('./checkers_common/tile'),
     Direction = require('./checkers_common/direction');
 
-module.exports = class {
+module.exports = class Checkers {
 
     constructor() {
 
