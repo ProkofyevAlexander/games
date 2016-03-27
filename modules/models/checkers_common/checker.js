@@ -8,14 +8,34 @@ module.exports = class Checker {
         return 'white';
     }
 
-    constructor(type) {
+    constructor(type, coordinates, available) {
         this.type = type;
+        this.coordinates = coordinates;
         this.king = false;
+        this.available = available || false;
         this.selected = false;
     }
 
     getType() {
         return this.type;
+    };
+
+    setCoordinates(coordinates) {
+        this.coordinates = coordinates;
+        return this;
+    };
+
+    getCoordinates() {
+        return this.coordinates;
+    };
+
+    setAvailable(available) {
+        this.available = available;
+        return this;
+    };
+
+    isAvailable() {
+        return this.available;
     };
 
     setKing(king) {
@@ -38,7 +58,7 @@ module.exports = class Checker {
 
     clone() {
 
-        var checker = new Checker(this.type);
+        var checker = new Checker(this.type, this.coordinates);
 
         checker
             .setSelected(this.selected)

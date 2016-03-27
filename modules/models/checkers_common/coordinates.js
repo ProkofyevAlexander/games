@@ -17,7 +17,7 @@ module.exports = class Coordinates {
         return new Coordinates(this.x, this.y);
     };
 
-    addDirection(direction) {
+    add(direction) {
         this.x += direction.getX();
         this.y += direction.getY();
     };

@@ -6,6 +6,7 @@ module.exports = class Playground {
     constructor() {
 
         this.playground = [];
+        this.tiles = [];
 
         [0, 1, 2, 3, 4, 5, 6, 7].forEach((x) => {
 
@@ -15,12 +16,18 @@ module.exports = class Playground {
 
                 var coordinates = new Coordinates(x, y);
 
-                this.playground[x][y] = new Tile(coordinates, ((x + y) % 2 == 0 ? Tile.getTypeBlack() : Tile.getTypeWhite()));
+                var tile = new Tile(coordinates, ((x + y) % 2 == 0 ? Tile.getTypeBlack() : Tile.getTypeWhite()));
+                this.playground[x][y] = tile;
+                this.tiles.push(tile);
 
             });
 
         });
     };
+
+    getTiles() {
+        return this.tiles;
+    }
 
     getTile(coordinates) {
         return this.playground[coordinates.getX()][coordinates.getY()];

@@ -57,6 +57,22 @@
           color: #555;
         }
 
+        &:before {
+          content: " ";
+          position: absolute;
+          top: 1px;
+          right: 1px;
+          bottom: 1px;
+          left: 1px;
+          z-index: 1;
+          border: {
+            radius: 50%;
+            style: solid;
+            width: 1px;
+            color: #888;
+          };
+        }
+
         &:not(._inactive):not(._selected):hover {
           margin: -22px;
           border: {
@@ -89,9 +105,11 @@
           border-color: #111;
         }
 
-        /*&._inactive {
-          opacity: .7;
-        }*/
+        &:not(._inactive):before {
+          border: {
+            color: forestgreen;
+          };
+        }
       }
     }
   }
