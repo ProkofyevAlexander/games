@@ -8,7 +8,7 @@ module.exports = class Checkers {
 
     constructor() {
 
-        this.current_player = Checker.getTypeBlack();
+        this.current_player = Checker.getTypeWhite();
 
         this.selectedTile = null;
 
@@ -25,10 +25,10 @@ module.exports = class Checkers {
                 this.blackTiles.push(tile);
 
                 if (coordinates.getX() < 3) {
-                    tile.setChecker(new Checker(Checker.getTypeBlack(), coordinates, true));
+                    tile.setChecker(new Checker(Checker.getTypeBlack(), coordinates, this.current_player == Checker.getTypeBlack()));
                 }
                 else if (coordinates.getX() > 4) {
-                    tile.setChecker(new Checker(Checker.getTypeWhite(), coordinates));
+                    tile.setChecker(new Checker(Checker.getTypeWhite(), coordinates, this.current_player == Checker.getTypeWhite()));
                 }
             }
         });
@@ -148,16 +148,18 @@ module.exports = class Checkers {
         }
     };
 
-    static getDirections(checker) {
+    static getDirections(checker, for_eat) {
+
+        for_eat = for_eat || false;
 
         var directions = [];
 
-        if (checker.isKing() || checker.getType() == Checker.getTypeBlack()) {
+        if (for_eat || checker.isKing() || checker.getType() == Checker.getTypeBlack()) {
             directions.push(new Direction(1, -1));
             directions.push(new Direction(1, 1));
         }
 
-        if (checker.isKing() || checker.getType() == Checker.getTypeWhite()) {
+        if (for_eat || checker.isKing() || checker.getType() == Checker.getTypeWhite()) {
             directions.push(new Direction(-1, -1));
             directions.push(new Direction(-1, 1));
         }
@@ -209,7 +211,7 @@ module.exports = class Checkers {
 
     findEatingStepTiles(checker) {
 
-        var directions = Checkers.getDirections(checker),
+        var directions = Checkers.getDirections(checker, true),
             eatingStepTiles = [];
 
         directions.forEach(direction => {
