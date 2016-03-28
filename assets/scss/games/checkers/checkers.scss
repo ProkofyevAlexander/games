@@ -107,6 +107,7 @@
 
         &:not(._inactive):before {
           border: {
+            width: 2px;
             color: forestgreen;
           };
         }

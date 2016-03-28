@@ -40,7 +40,7 @@ gulp.task('scripts', function() {
     gulp.src('modules/angular/controllers.js')
         .pipe(browserify({
             insertGlobals : false,
-            debug : false && !PRODUCTION
+            debug : !PRODUCTION
         }))
         .pipe(babel())
         .pipe(gulp.dest('public/js'))

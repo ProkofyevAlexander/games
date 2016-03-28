@@ -48,10 +48,12 @@ module.exports = class Tile {
     }
 
     activateEating() {
+        var was_eating = false;
         if (this.tileWithCheckerForEat != null) {
             this.tileWithCheckerForEat.setChecker(null);
+            was_eating = true;
         }
         this.tileWithCheckerForEat = null;
-        return this;
+        return was_eating;
     }
 };

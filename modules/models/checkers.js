@@ -71,13 +71,18 @@ module.exports = class Checkers {
     moveCheckerToXY(x, y) {
 
         var toCoordinates = new Coordinates(x, y),
-            toTile = this.playground.getTile(toCoordinates),
-            selectedChecker = this.selectedTile.getChecker();
+            toTile = this.playground.getTile(toCoordinates);
 
-        if (selectedChecker == null || !toTile.isAvailable()) return false;
+        if (!toTile.isAvailable()) return false;
 
-        toTile
-            .setChecker(selectedChecker.clone().setCoordinates(toCoordinates))
+        var selectedChecker = this.selectedTile.getChecker();
+
+        if (selectedChecker == null) return false;
+
+        selectedChecker = selectedChecker.clone().setCoordinates(toCoordinates);
+
+        var was_eating = toTile
+            .setChecker(selectedChecker)
             .activateEating();
 
         this.selectedTile.setChecker(null);
@@ -88,7 +93,9 @@ module.exports = class Checkers {
                 .setTileWithCheckerForEat(null);
         });
 
-        var eatingStepTiles = this.findEatingStepTiles(selectedChecker);
+        var eatingStepTiles = was_eating
+            ? this.findEatingStepTiles(selectedChecker)
+            : [];
 
         if (eatingStepTiles.length > 0) {
 
@@ -110,11 +117,34 @@ module.exports = class Checkers {
                 ? Checker.getTypeWhite()
                 : Checker.getTypeBlack();
 
+            var exist_checkers_that_can_eat = false,
+                playerCheckers = [];
+
             this.blackTiles.forEach(tile => {
-                if (tile.getChecker() != null) {
-                    tile.getChecker().setAvailable(tile.getChecker().getType() == this.current_player);
+
+                var checker = tile.getChecker();
+
+                if (checker != null) {
+                    if (checker.getType() == this.current_player) {
+                        if (this.findEatingStepTiles(checker).length > 0) {
+                            checker.setAvailable(true);
+                            exist_checkers_that_can_eat = true;
+                        }
+                        else {
+                            playerCheckers.push(checker);
+                        }
+                    }
+                    else {
+                        checker.setAvailable(false);
+                    }
                 }
             });
+
+            if (!exist_checkers_that_can_eat) {
+                playerCheckers.forEach(checker => {
+                    checker.setAvailable(true);
+                });
+            }
         }
     };
 
