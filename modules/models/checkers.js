@@ -93,6 +93,8 @@ module.exports = class Checkers {
         }
 
         //@TODO Deny soft steps for king
+        //@TODO Check on winner or draw
+        //@TODO If only one checker have steps make it selected automatically
 
         var tileWithCheckerForEat = toTile
             .setChecker(selectedChecker)
