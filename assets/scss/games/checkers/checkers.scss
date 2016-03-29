@@ -42,7 +42,7 @@
         };
       }
 
-      &__checker {
+      &-checker {
         position: relative;
         top: 50%;
         left: 50%;
@@ -111,7 +111,34 @@
             color: forestgreen;
           };
         }
+
+        &-crown {
+          position: absolute;
+          top: 5px;
+          left: 5px;
+          width: 30px;
+          height: 30px;
+        }
+
+        &._white &-crown {
+          stroke: #000000;
+          fill: #000000;
+        }
+
+        &._black &-crown {
+          stroke: #ffffff;
+          fill: #ffffff;
+        }
+
+        &:not(._king) &-crown {
+          display: none;
+        }
       }
     }
   }
+}
+
+.svg-crown-path {
+  fill: inherit;
+  stroke: inherit;
 }

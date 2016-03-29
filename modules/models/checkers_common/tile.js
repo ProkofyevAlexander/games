@@ -47,13 +47,15 @@ module.exports = class Tile {
         return this;
     }
 
-    activateEating() {
-        var was_eating = false;
+    getTileWithCheckerForEat() {
+        return this.tileWithCheckerForEat;
+    }
+
+/*    activateEating() {
         if (this.tileWithCheckerForEat != null) {
             this.tileWithCheckerForEat.setChecker(null);
-            was_eating = true;
         }
         this.tileWithCheckerForEat = null;
-        return was_eating;
-    }
+        return this;
+    }*/
 };

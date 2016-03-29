@@ -16,6 +16,8 @@ module.exports = class Checkers {
 
         this.blackTiles = [];
 
+        this.tilesWithCheckerForEat = [];
+
         this.playground.getTiles().forEach(tile => {
 
             var coordinates = tile.getCoordinates();
@@ -79,21 +81,35 @@ module.exports = class Checkers {
 
         if (selectedChecker == null) return false;
 
-        selectedChecker = selectedChecker.clone().setCoordinates(toCoordinates);
+        selectedChecker = selectedChecker.clone();
+        selectedChecker.setCoordinates(toCoordinates);
 
-        var was_eating = toTile
+        var set_as_king =
+            toCoordinates.getX() == 0 && selectedChecker.getType() == Checker.getTypeWhite() ||
+            toCoordinates.getX() == 7 && selectedChecker.getType() == Checker.getTypeBlack();
+
+        if (set_as_king) {
+            selectedChecker.setKing(true);
+        }
+
+        //@TODO Deny soft steps for king
+
+        var tileWithCheckerForEat = toTile
             .setChecker(selectedChecker)
-            .activateEating();
+            .getTileWithCheckerForEat();
 
         this.selectedTile.setChecker(null);
 
         this.blackTiles.forEach(tile => {
-            tile
-                .setAvailable(false)
-                .setTileWithCheckerForEat(null);
+            tile.setAvailable(false);
         });
 
-        var eatingStepTiles = was_eating
+        if (tileWithCheckerForEat != null) {
+            tileWithCheckerForEat.getChecker().setMarkedForEat();
+            this.tilesWithCheckerForEat.push(tileWithCheckerForEat);
+        }
+
+        var eatingStepTiles = tileWithCheckerForEat != null
             ? this.findEatingStepTiles(selectedChecker)
             : [];
 
@@ -110,6 +126,15 @@ module.exports = class Checkers {
             Checkers.makeTilesAvailable(eatingStepTiles);
         }
         else {
+
+            while (this.tilesWithCheckerForEat.length > 0) {
+                tileWithCheckerForEat = this.tilesWithCheckerForEat.pop();
+                tileWithCheckerForEat.setChecker(null);
+            }
+
+            this.blackTiles.forEach(tile => {
+                tile.setTileWithCheckerForEat(null);
+            });
 
             selectedChecker.setSelected(false);
 
@@ -249,7 +274,7 @@ module.exports = class Checkers {
 
                         if (checkedChecker != null) {
 
-                            if (checkedTile.getChecker().getType() != checker.getType()) {
+                            if (checkedChecker.getType() != checker.getType() && !checkedChecker.isMarkedForEat()) {
                                 checkerForEat = checkedTile;
                             }
                             else {

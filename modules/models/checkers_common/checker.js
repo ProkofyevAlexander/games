@@ -14,6 +14,7 @@ module.exports = class Checker {
         this.king = false;
         this.available = available || false;
         this.selected = false;
+        this.marked_for_eat = false;
     }
 
     getType() {
@@ -55,6 +56,15 @@ module.exports = class Checker {
     isSelected() {
         return this.selected;
     };
+
+    setMarkedForEat() {
+        this.marked_for_eat = true;
+        return this;
+    }
+
+    isMarkedForEat() {
+        return this.marked_for_eat;
+    }
 
     clone() {
 
