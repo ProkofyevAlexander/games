@@ -1,5 +1,4 @@
 var express = require('express'),
-    logger = require('./logger'),
     config = require('./config');
 var router = express.Router();
 
@@ -8,7 +7,19 @@ var languages = {
     ru: 'Русский'
 };
 
+// AngularJS components
+router.get('/components/*', function (req, res, next) {
+
+    res.render('.' + req.originalUrl, {}, function(err, html) {
+        if (err) {
+            next('404');
+        }
+        res.send(html);
+    });
+});
+
 router.get('/', function (req, res) {
+
     res.redirect('/en/');
 });
 
@@ -24,7 +35,7 @@ router.get('/:lng/:page?', function (req, res, next) {
     }
 
     if (typeof page == 'undefined') {
-        res.render('index', {title: 'Hey', message: 'Hello there!'});
+        res.render('index', {lng: lng});
     }
     else {
         next('404');

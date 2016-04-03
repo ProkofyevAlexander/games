@@ -37,7 +37,7 @@ gulp.task('sass', function () {
 });
 
 gulp.task('scripts', function() {
-    gulp.src('modules/angular/controllers.js')
+    gulp.src('modules/angular-controllers/main.js')
         .pipe(browserify({
             insertGlobals : false,
             debug : !PRODUCTION
