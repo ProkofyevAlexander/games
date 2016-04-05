@@ -7,133 +7,133 @@
 
     margin: 0;
     height: 50px;
+  }
 
-    &-tile {
-      position: relative;
-      margin: 0;
-      display: inline-block;
-      height: 50px;
-      width: 50px;
+  &-tile {
+    position: relative;
+    margin: 0;
+    display: inline-block;
+    height: 50px;
+    width: 50px;
 
-      &._black {
-        background: {
-          color: #555;
-        };
+    &._black {
+      background: {
+        color: #555;
+      };
+    }
+
+    &._white {
+      background: {
+        color: #eee;
+      };
+    }
+
+    &._available:before {
+      content: " ";
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      bottom: 1px;
+      left: 1px;
+      z-index: 1;
+      border: {
+        style: solid;
+        width: 1px;
+        color: #999;
+      };
+    }
+  }
+
+  &-checker {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    margin: -21px;
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    border: {
+      radius: 50%;
+      style: solid;
+      width: 1px;
+      color: #555;
+    }
+
+    &:before {
+      content: " ";
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      bottom: 1px;
+      left: 1px;
+      z-index: 1;
+      border: {
+        radius: 50%;
+        style: solid;
+        width: 1px;
+        color: #888;
+      };
+    }
+
+    &:not(._inactive):not(._selected):hover {
+      margin: -22px;
+      border: {
+        width: 2px;
+        color: #999;
       }
+    }
 
-      &._white {
-        background: {
-          color: #eee;
-        };
+    &._black {
+      background: {
+        color: #111;
+      };
+    }
+
+    &._white {
+      background: {
+        color: #eee;
+      };
+    }
+
+    &._selected {
+      margin: -22px;
+      border: {
+        width: 2px;
+        color: #fff;
       }
+    }
 
-      &._available:before {
-        content: " ";
-        position: absolute;
-        top: 1px;
-        right: 1px;
-        bottom: 1px;
-        left: 1px;
-        z-index: 1;
-        border: {
-          style: solid;
-          width: 1px;
-          color: #999;
-        };
-      }
+    &._white._selected {
+      border-color: #111;
+    }
 
-      &-checker {
-        position: relative;
-        top: 50%;
-        left: 50%;
-        margin: -21px;
-        height: 40px;
-        width: 40px;
-        cursor: pointer;
-        border: {
-          radius: 50%;
-          style: solid;
-          width: 1px;
-          color: #555;
-        }
+    &:not(._inactive):before {
+      border: {
+        width: 2px;
+        color: forestgreen;
+      };
+    }
 
-        &:before {
-          content: " ";
-          position: absolute;
-          top: 1px;
-          right: 1px;
-          bottom: 1px;
-          left: 1px;
-          z-index: 1;
-          border: {
-            radius: 50%;
-            style: solid;
-            width: 1px;
-            color: #888;
-          };
-        }
+    &-crown {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: 30px;
+      height: 30px;
+    }
 
-        &:not(._inactive):not(._selected):hover {
-          margin: -22px;
-          border: {
-            width: 2px;
-            color: #999;
-          }
-        }
+    &._white &-crown {
+      stroke: #000000;
+      fill: #000000;
+    }
 
-        &._black {
-          background: {
-            color: #111;
-          };
-        }
+    &._black &-crown {
+      stroke: #ffffff;
+      fill: #ffffff;
+    }
 
-        &._white {
-          background: {
-            color: #eee;
-          };
-        }
-
-        &._selected {
-          margin: -22px;
-          border: {
-            width: 2px;
-            color: #fff;
-          }
-        }
-
-        &._white._selected {
-          border-color: #111;
-        }
-
-        &:not(._inactive):before {
-          border: {
-            width: 2px;
-            color: forestgreen;
-          };
-        }
-
-        &-crown {
-          position: absolute;
-          top: 5px;
-          left: 5px;
-          width: 30px;
-          height: 30px;
-        }
-
-        &._white &-crown {
-          stroke: #000000;
-          fill: #000000;
-        }
-
-        &._black &-crown {
-          stroke: #ffffff;
-          fill: #ffffff;
-        }
-
-        &:not(._king) &-crown {
-          display: none;
-        }
-      }
+    &:not(._king) &-crown {
+      display: none;
     }
   }
 }
