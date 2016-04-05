@@ -1,10 +1,22 @@
 
-angular.module('app', [])
+angular.module('app', ['ngComponentRouter'])
 
-/*    .component('main', {
-        templateUrl: '/components/main',
-        controller: function(){}
-    })*/
+    .config(function($locationProvider) {
+        $locationProvider.html5Mode(true);
+    })
+
+    .value('$routerRootComponent', 'app')
+
+    .component('app', {
+        $routeConfig: [
+            {path: '/:lng/', name: 'Main', component: 'main'},
+            {path: '/:lng/checkers/', name: 'Checkers', component: 'checkers'}
+        ]
+    })
+
+    .component('main', {
+        templateUrl: '/components/main'
+    })
 
     .component('checkers', {
         templateUrl: '/components/games/checkers',
