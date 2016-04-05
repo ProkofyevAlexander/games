@@ -28,18 +28,19 @@ router.get('/:lng/:page?', function (req, res, next) {
     var lng = req.params['lng'],
         page = req.params['page'];
 
-    //log.debug({lng: lng, page: page, type_of_page: (typeof page)}, __filename + ':20');
-
     if (!languages.hasOwnProperty(lng)) {
         next('404');
     }
 
-    if (typeof page == 'undefined') {
+    // Setup page content by AngularJS
+    res.render('index', {lng_init: "lng='" + lng + "'"});
+
+    /*if (typeof page == 'undefined') {
         res.render('index', {lng: lng});
     }
     else {
         next('404');
-    }
+    }*/
 });
 
 module.exports = router;

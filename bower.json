@@ -12,7 +12,5 @@
     "test",
     "tests"
   ],
-  "dependencies": {
-    "angular": "^1.5.2"
-  }
+  "dependencies": {}
 }

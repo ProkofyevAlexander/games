@@ -10,6 +10,7 @@ angular.module('app', ['ngComponentRouter'])
     .component('app', {
         $routeConfig: [
             {path: '/:lng/', name: 'Main', component: 'main'},
+            {path: '/:lng/about/', name: 'About', component: 'main'},
             {path: '/:lng/checkers/', name: 'Checkers', component: 'checkers'}
         ]
     })

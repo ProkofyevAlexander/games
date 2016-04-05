@@ -6,21 +6,20 @@ html(ng-app='app')
         link(rel='stylesheet' href='/css/layout.css')
         link(rel='stylesheet' href='/css/chat.css')
         link(rel='stylesheet' href='/css/games/checkers/checkers.css')
-        //script(type='text/javascript', src='/angular/angular.min.js')
         script(type='text/javascript', src='/node_modules/angular/angular.js')
         script(type='text/javascript', src='/node_modules/@angular/router/angular1/angular_1_router.js')
         script(type='text/javascript', src='/js/main.js')
     body
         div(class='header')
             div(class='header-logo')
+            input(type='hidden' ng-model='lng' ng-init= lng_init)
             nav(class='header-nav')
-                a(class='header-nav-itm' ng-link="['Main', {lng: 'en'}]") Main
-                a(class='header-nav-itm' ng-link="['Checkers', {lng: 'en'}]") Checkers
-                a(class='header-nav-itm') About
+                a(class='header-nav-itm' ng-repeat='link in ["Main", "Checkers", "About"]' ng-link='[\'{{ link }}\', {lng: \'{{ lng }}\'}]') {{ link }}
         div(class='main')
             div(class='main-box')
                 div(class='main-box-base')
                     ng-outlet
+
                 div(class='main-box-side')
                     div(class='chat')
                         div(class='chat-messages')
