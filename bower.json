@@ -12,5 +12,9 @@
     "test",
     "tests"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "requirejs": "^2.2.0",
+    "angular-route": "^1.5.3",
+    "angular": "^1.5.3"
+  }
 }

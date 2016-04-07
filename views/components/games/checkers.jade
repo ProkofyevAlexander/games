@@ -1,7 +1,7 @@
 include ./checkers.svg
-div(class='game-checkers-playground')
+div(class='game-checkers-playground' ng-controller="CheckersController as ctrl")
     div(class='game-checkers-playground-row' ng-repeat="(key, x) in [0, 1, 2, 3, 4, 5, 6, 7]")
-        div(class='game-checkers-playground-tile _{{ $ctrl.playground.getTileXY(x, y).getType() }} {{ $ctrl.playground.getTileXY(x, y).isAvailable() ? "_available" : "" }}' ng-repeat="(key, y) in [0, 1, 2, 3, 4, 5, 6, 7]" ng-click="$ctrl.checkers.moveCheckerToXY(x,y)") {{checker=$ctrl.playground.getTileXY(x, y).getChecker();""}}
-            div(class='game-checkers-playground-checker {{ checker != null ? "_" + checker.getType() : "" }} {{ checker != null && checker.isSelected() ? "_selected" : "" }} {{ checker != null && !checker.isAvailable() ? "_inactive" : "" }} {{ checker != null && checker.isKing() ? "_king " : "" }}' ng-if='checker != null' ng-click='$ctrl.checkers.selectCheckerXY(x,y)')
+        div(class='game-checkers-playground-tile _{{ ctrl.playground.getTileXY(x, y).getType() }} {{ ctrl.playground.getTileXY(x, y).isAvailable() ? "_available" : "" }}' ng-repeat="(key, y) in [0, 1, 2, 3, 4, 5, 6, 7]" ng-click="ctrl.checkers.moveCheckerToXY(x,y)") {{checker=ctrl.playground.getTileXY(x, y).getChecker();""}}
+            div(class='game-checkers-playground-checker {{ checker != null ? "_" + checker.getType() : "" }} {{ checker != null && checker.isSelected() ? "_selected" : "" }} {{ checker != null && !checker.isAvailable() ? "_inactive" : "" }} {{ checker != null && checker.isKing() ? "_king " : "" }}' ng-if='checker != null' ng-click='ctrl.checkers.selectCheckerXY(x,y)')
                 svg(class="game-checkers-playground-checker-crown" xmlns:xlink="http://www.w3.org/1999/xlink")
                     use(xlink:href="#crown")

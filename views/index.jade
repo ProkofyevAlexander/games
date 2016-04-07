@@ -1,27 +1,29 @@
 doctype html
-html(ng-app='app')
+html
     head
         title Games
         base(href='http://localhost:8000/')
         link(rel='stylesheet' href='/css/layout.css')
         link(rel='stylesheet' href='/css/chat.css')
         link(rel='stylesheet' href='/css/games/checkers/checkers.css')
-        script(type='text/javascript', src='/node_modules/angular/angular.js')
-        script(type='text/javascript', src='/node_modules/@angular/router/angular1/angular_1_router.js')
-        script(type='text/javascript', src='/js/main.js')
+
     body
         div(class='header')
             div(class='header-logo')
             input(type='hidden' ng-model='lng' ng-init= lng_init)
             nav(class='header-nav')
-                a(class='header-nav-itm' ng-repeat='link in ["Main", "Checkers", "About"]' ng-link='[\'{{ link }}\', {lng: \'{{ lng }}\'}]') {{ link }}
+                //a(class='header-nav-itm' ng-repeat='link in ["Main", "Checkers", "About"]' ng-link='[\'{{ link }}\', {lng: \'{{ lng }}\'}]') {{ link }}
+                a(class='header-nav-itm' href='/{{ lng }}/') Main
+                a(class='header-nav-itm' href='/{{ lng }}/checkers') Checkers
+                a(class='header-nav-itm' href='/{{ lng }}/about') About
         div(class='main')
             div(class='main-box')
-                div(class='main-box-base')
-                    ng-outlet
+                div(class='main-box-base' ng-view)
 
                 div(class='main-box-side')
                     div(class='chat')
                         div(class='chat-messages')
                         div(class='chat-new-message')
         div(class='footer') Footer
+
+        script(type='text/javascript', src='/requirejs/require.js' data-main='/js/bootstrap.js')

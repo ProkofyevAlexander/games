@@ -21,8 +21,6 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@angular/router": "^0.2.0",
-    "angular": "^1.5.3",
     "bunyan": "^1.8.0",
     "express": "^4.13.4",
     "file-stream-rotator": "0.0.6",

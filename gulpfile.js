@@ -37,13 +37,13 @@ gulp.task('sass', function () {
 });
 
 gulp.task('scripts', function() {
-    gulp.src('modules/angular-controllers/main.js')
+    gulp.src('modules/angular-controllers/*.js')
         .pipe(browserify({
             insertGlobals : false,
             debug : !PRODUCTION
         }))
         .pipe(babel())
-        .pipe(gulp.dest('public/js'))
+        .pipe(gulp.dest('public/js/controllers'))
 });
 
 

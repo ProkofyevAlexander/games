@@ -1,4 +1,0 @@
-mkdir ./public/node_modules
-cd ./public/node_modules
-ln -s ../../node_modules/angular ./angular
-ln -s ../../node_modules/@angular ./@angular
