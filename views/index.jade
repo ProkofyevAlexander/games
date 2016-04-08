@@ -12,7 +12,6 @@ html
             div(class='header-logo')
             input(type='hidden' ng-model='lng' ng-init= lng_init)
             nav(class='header-nav')
-                //a(class='header-nav-itm' ng-repeat='link in ["Main", "Checkers", "About"]' ng-link='[\'{{ link }}\', {lng: \'{{ lng }}\'}]') {{ link }}
                 a(class='header-nav-itm' href='/{{ lng }}/') Main
                 a(class='header-nav-itm' href='/{{ lng }}/checkers') Checkers
                 a(class='header-nav-itm' href='/{{ lng }}/about') About

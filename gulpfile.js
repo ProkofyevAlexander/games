@@ -3,9 +3,16 @@
 var path = require('path');
 var gulp = require('gulp');
 var sass = require('gulp-sass');
-var source_maps = require('gulp-sourcemaps');
+var sourceMaps = require('gulp-sourcemaps');
 var babel = require('gulp-babel');
 var browserify = require('gulp-browserify');
+var postcss = require('gulp-postcss');
+var autoprefixer = require('autoprefixer');
+var cssnano = require('cssnano');
+var initial = require('postcss-initial');
+var importPartial = require('postcss-partial-import');
+var autoreset = require('postcss-autoreset');
+var singleCharset = require("postcss-single-charset");
 
 //linux & mac: export NODE_ENV=production
 //windows: set NODE_ENV=production
@@ -18,32 +25,42 @@ var SRC_PATH_SASS = path.join(__dirname, 'assets/scss/**/*.scss'),
 
 gulp.task('sass', function () {
 
+    var processors = [
+        autoreset({
+            reset: {
+                fontFamily: '"Open Sans", Arial, sans-serif',
+                color: '#74797d'
+            }
+        }),
+        importPartial({}),
+        autoprefixer,
+        initial({
+            reset: 'inherited' // reset only inherited rules
+        }),
+        singleCharset()
+    ];
+
     if (PRODUCTION) {
-
-        return gulp
-            .src(SRC_PATH_SASS)
-            .pipe(source_maps.init())
-            .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
-            .pipe(source_maps.write('.'))
-            .pipe(gulp.dest(DEST_PATH_SASS));
+        processors.push(cssnano);
     }
-    else {
 
-        return gulp
-            .src(SRC_PATH_SASS)
-            .pipe(sass().on('error', sass.logError))
-            .pipe(gulp.dest(DEST_PATH_SASS));
-    }
+    return gulp
+        .src(SRC_PATH_SASS)
+        .pipe(sourceMaps.init())
+        .pipe(sass().on('error', sass.logError))
+        .pipe(postcss(processors))
+        .pipe(sourceMaps.write('.'))
+        .pipe(gulp.dest(DEST_PATH_SASS));
 });
 
 gulp.task('scripts', function() {
-    gulp.src('modules/angular-controllers/*.js')
+    gulp.src('modules/angular-controllers/**/*.js')
         .pipe(browserify({
             insertGlobals : false,
             debug : !PRODUCTION
         }))
         .pipe(babel())
-        .pipe(gulp.dest('public/js/controllers'))
+        .pipe(gulp.dest('public/js/controllers/'))
 });
 
 

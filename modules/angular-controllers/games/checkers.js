@@ -1,4 +1,4 @@
-var Checkers = require('../models/checkers');
+var Checkers = require('../../models/checkers');
 
 define(['app'], function (app) {
 
