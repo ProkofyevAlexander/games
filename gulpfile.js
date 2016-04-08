@@ -11,7 +11,6 @@ var autoprefixer = require('autoprefixer');
 var cssnano = require('cssnano');
 var initial = require('postcss-initial');
 var importPartial = require('postcss-partial-import');
-var autoreset = require('postcss-autoreset');
 var singleCharset = require("postcss-single-charset");
 
 //linux & mac: export NODE_ENV=production
@@ -26,12 +25,6 @@ var SRC_PATH_SASS = path.join(__dirname, 'assets/scss/**/*.scss'),
 gulp.task('sass', function () {
 
     var processors = [
-        autoreset({
-            reset: {
-                fontFamily: '"Open Sans", Arial, sans-serif',
-                color: '#74797d'
-            }
-        }),
         importPartial({}),
         autoprefixer,
         initial({
