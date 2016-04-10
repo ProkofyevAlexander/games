@@ -1,6 +1,6 @@
 define(['routes', 'services/dependencyResolverFor'], function (config, dependencyResolverFor) {
 
-    var app = angular.module('app', ['ngRoute']);
+    var app = angular.module('app', ['ngRoute','angularCSS']);
 
     app.config([
         '$routeProvider',
@@ -22,7 +22,8 @@ define(['routes', 'services/dependencyResolverFor'], function (config, dependenc
                 angular.forEach(config.routes, function (route, path) {
                     $routeProvider.when(path, {
                         templateUrl: route.templateUrl,
-                        resolve: dependencyResolverFor(route.dependencies)
+                        resolve: dependencyResolverFor(route.dependencies),
+                        css: route.css
                     });
                 });
             }

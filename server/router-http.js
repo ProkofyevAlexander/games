@@ -33,7 +33,7 @@ router.get('/:lng/:page?', function (req, res, next) {
     }
 
     // Setup page content by AngularJS
-    res.render('index', {lng_init: "lng='" + lng + "'"});
+    res.render('index', {lng: lng});
 
     /*if (typeof page == 'undefined') {
         res.render('index', {lng: lng});
