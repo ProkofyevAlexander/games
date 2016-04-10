@@ -7,7 +7,7 @@ define([], function()
                 templateUrl: '/components/main'
             },
             '/:lng/checkers': {
-                templateUrl: '/components/games/checkers',
+                templateUrl: '/components/games/checkers/checkers',
                 dependencies: ['controllers/games/checkers']
             },
             '/:lng/about': {

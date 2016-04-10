@@ -1,46 +1,79 @@
-.game-checkers-playground {
+@charset "UTF-8";
 
-  width: 400px;
-  margin: 0 auto;
+$tile-size: 50px;
+$row-info-height: 30px;
+$tile-info-width: 30px;
 
-  &-row {
+.game-checkers {
 
-    margin: 0;
-    height: 50px;
-  }
+  &-playground {
 
-  &-tile {
-    position: relative;
-    margin: 0;
-    display: inline-block;
-    height: 50px;
-    width: 50px;
+    width: 460px;
+    margin: 0 auto;
 
-    &._black {
-      background: {
-        color: #555;
-      };
+    &-row {
+      margin: 0;
+      height: $tile-size;
     }
 
-    &._white {
-      background: {
-        color: #eee;
-      };
+    &-row-info {
+      margin: 0;
+      height: $row-info-height;
+      padding: 0 $tile-info-width;
+      overflow: hidden;
+
+      &-tile {
+        position: relative;
+        display: inline-block;
+        width: $tile-size;
+        text-align: center;
+      }
     }
 
-    &._available:before {
-      content: " ";
-      position: absolute;
-      top: 1px;
-      right: 1px;
-      bottom: 1px;
-      left: 1px;
-      z-index: 1;
-      border: {
-        style: solid;
-        width: 1px;
-        color: #999;
-      };
+    &-tile,
+    &-tile-info {
+      position: relative;
+      margin: 0;
+      display: inline-block;
+      height: $tile-size;
+      overflow: hidden;
+    }
+
+    &-tile-info {
+      line-height: $tile-size;
+      width: $tile-info-width;
+      text-align: center;
+    }
+
+    &-tile {
+      width: $tile-size;
+
+      &._black {
+        background: {
+          color: #555;
+        };
+      }
+
+      &._white {
+        background: {
+          color: #eee;
+        };
+      }
+
+      &._available:before {
+        content: " ";
+        position: absolute;
+        top: 1px;
+        right: 1px;
+        bottom: 1px;
+        left: 1px;
+        z-index: 1;
+        border: {
+          style: solid;
+          width: 1px;
+          color: #999;
+        };
+      }
     }
   }
 

@@ -1,0 +1,27 @@
+include checkers.svg
+div(class='game-checkers' ng-controller='CheckersController as ctrl')
+    div(style='display:none;')
+        | {{
+        - for (var x = 0; x < 8; x++)
+            - for (var y = 0; y < 8; y++)
+                | tile#{x}#{y} = ctrl.playground.getTileXY(#{x},#{y});
+                | checker#{x}#{y} = tile#{x}#{y}.getChecker();
+        | ""}}
+    div(class='game-checkers-info-bar')
+    div(class='game-checkers-playground')
+        - for (var x = 0; x < 8; x++)
+            - var line_num = 8 - x
+            if x == 0
+                include inc-row-info
+            div(class='game-checkers-playground-row')
+                - for (var y = 0; y < 8; y++)
+                    if y == 0
+                        div(class='game-checkers-playground-tile-info')= line_num
+                    div(class='game-checkers-playground-tile _{{ tile#{x}#{y}.getType() }} {{ tile#{x}#{y}.isAvailable() ? "_available" : "" }}' ng-click="ctrl.checkers.moveCheckerToXY(#{x},#{y})")
+                        div(class='game-checkers-checker {{ checker#{x}#{y} != null ? "_" + checker#{x}#{y}.getType() : "" }} {{ checker#{x}#{y} != null && checker#{x}#{y}.isSelected() ? "_selected" : "" }} {{ checker#{x}#{y} != null && !checker#{x}#{y}.isAvailable() ? "_inactive" : "" }} {{ checker#{x}#{y} != null && checker#{x}#{y}.isKing() ? "_king " : "" }}' ng-if='checker#{x}#{y} != null' ng-click='ctrl.checkers.selectCheckerXY(#{x},#{y})')
+                            svg(class="game-checkers-checker-crown" xmlns:xlink="http://www.w3.org/1999/xlink")
+                                use(xlink:href="#crown")
+                    if y == 7
+                        div(class='game-checkers-playground-tile-info')= line_num
+            if x == 7
+                include inc-row-info
