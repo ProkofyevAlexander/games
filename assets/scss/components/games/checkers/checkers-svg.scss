@@ -1,0 +1,54 @@
+@charset "UTF-8";
+
+$tile-size: 50px;
+$row-info-height: 30px;
+$tile-info-width: 30px;
+
+.game-checkers {
+
+  svg {
+
+    height: 100%;
+    width: 100%;
+    max-width: 90vw;
+    max-height: 70vh;
+  }
+}
+
+path {
+  fill: inherit;
+  stroke: inherit;
+}
+
+use {
+  &._available {
+    .chess-board-tile {
+      fill: #888888;
+    }
+  }
+  &._white {
+    .checkers-checker-bg,
+    .checkers-checker-circle {
+      fill: #ffffff;
+      stroke: #000000;
+    }
+  }
+  &._black {
+    .checkers-checker-bg,
+    .checkers-checker-circle {
+      fill: #000000;
+      stroke: #ffffff;
+    }
+  }
+  &:not(._inactive) {
+    .checkers-checker-circle {
+      stroke: #00ff00;
+    }
+  }
+  &._selected {
+    .checkers-checker-circle {
+      stroke: #ff0000;
+    }
+  }
+}
+

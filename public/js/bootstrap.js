@@ -1,9 +1,9 @@
 require.config({
     baseUrl: '/js',
     paths: {
-        'angular': '/angular/angular',
-        'angular-route': '/angular-route/angular-route',
-        'angular-css': '/js/angular-css'
+        'angular': '/angular/angular.min',
+        'angular-route': '/angular-route/angular-route.min',
+        'angular-css': '/js/angular-css.min'
     },
     shim: {
         'app': {

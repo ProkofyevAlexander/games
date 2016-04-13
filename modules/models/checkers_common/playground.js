@@ -16,7 +16,7 @@ module.exports = class Playground {
 
                 var coordinates = new Coordinates(x, y);
 
-                var tile = new Tile(coordinates, ((x + y) % 2 == 0 ? Tile.getTypeBlack() : Tile.getTypeWhite()));
+                var tile = new Tile(coordinates, ((x + y) % 2 != 0 ? Tile.getTypeBlack() : Tile.getTypeWhite()));
                 this.playground[x][y] = tile;
                 this.tiles.push(tile);
 
