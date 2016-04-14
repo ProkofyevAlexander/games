@@ -18,15 +18,22 @@ define(['routes'], function (config) {
         };
     };
 
-    var app = angular.module('app', ['ngRoute', 'angularCSS']);
+    var app = angular.module('app', ['ngRoute', 'angularCSS', 'duScroll'])
+        .run(function ($rootScope) {
+            if (!window.history || !history.replaceState) {
+                return;
+            }
 
-/*    app.controller('appController', ['$scope', function ($scope) {
+            $rootScope.$on('duScrollspy:becameActive', function ($event, $element, $target) {
 
-        $scope.$on('$routeChangeSuccess', function () {
-            $(window).trigger('resize');
-            $(document).trigger('initPage');
+                //Automaticly update location
+                var hash = $element.attr('du-scrollspy');
+                if (hash) {
+                    console.log(hash);
+                    history.replaceState(null, null, window.location.pathname + '#' + hash);
+                }
+            });
         });
-    }]);*/
 
     app.config([
         '$routeProvider',

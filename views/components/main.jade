@@ -1,223 +1,242 @@
-div(id="top" class="jumbotron" data-src="/img/main.gif" data-position="center center")
-    div(class="container")
-        h1 Prokofyev Alexander
-        p(class="lead") Web developer
+div(ng-controller="mainController")
 
-    div(class="overlay")
+    div(id="top" class="jumbotron" data-src="/img/main.gif" data-position="center center")
+        div(class="container")
+            h1 Prokofyev Alexander
+            p(class="lead") Web developer
 
-    a(href="#profile" class="scroll-down")
-        span(class="glyphicon glyphicon-chevron-down")
+        div(class="overlay")
 
-nav(class="navbar navbar-default" id="navbar" role="navigation")
+        a(href="#profile" class="scroll-down")
+            span(class="glyphicon glyphicon-chevron-down")
 
-    // Brand and toggle get grouped for better mobile display
-    div(class="navbar-header")
-        button(type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse")
-            span(class="sr-only") Toggle navigation
-            span(class="icon-bar")
-            span(class="icon-bar")
-            span(class="icon-bar")
+    nav(class="navbar navbar-default" id="navbar" role="navigation")
 
-    // Collect the nav links, forms, and other content for toggling
-    div(class="collapse navbar-collapse navbar-ex1-collapse")
-        ul(class="nav navbar-nav")
-            li(class="active")
-                a(href="#profile") Profile
-                a(href="#top" style="display:none;")
-            li
-                a(href="#experiences") Experiences
-            li
-                a(href="#abilities") Abilities
-            li
-                a(href="#contact") Contact
+        // Brand and toggle get grouped for better mobile display
+        div(class="navbar-header")
+            button(type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse")
+                span(class="sr-only") Toggle navigation
+                span(class="icon-bar")
+                span(class="icon-bar")
+                span(class="icon-bar")
 
-div(class="background-white")
-    div(id="profile" class="container")
-        h2 Profile
-        p(class="lead") I'm a PHP/JavaScript web developer
-        hr
+        // Collect the nav links, forms, and other content for toggling
+        div(class="collapse navbar-collapse navbar-ex1-collapse")
+            ul(class="nav navbar-nav")
+                li(du-scrollspy="profile" class="active")
+                    a(href="#profile") Profile
+                li(du-scrollspy="experiences")
+                    a(href="#experiences") Experiences
+                li(du-scrollspy="abilities")
+                    a(href="#abilities") Abilities
+                li(du-scrollspy="games")
+                    a(href="#games") Games
+                li(du-scrollspy="contact")
+                    a(href="#contact") Contact
 
-        div(class="row")
-            div(class="col-md-4")
-                h3 About me
-                p
-                    | I am an web developer. ....
-
-            div(class="col-md-4 text-center")
-                img(src="/img/photo.png" alt="Prokofyev Alexander" width="246" height="246")
-
-            div(class="col-md-4")
-                h3 Details
-                p
-                    strong Name:
-                    br
-                    |Prokofyev Alexander
-                    br
-                    strong Age:
-                    br
-                    |29 years
-                    br
-                    strong Location:
-                    br
-                    |Vladimir state, Russian Federation
-
-div(id="experiences" class="container")
-
-    h2 Experiences
-    p(class="lead")
-        |“The secret of getting ahead is getting started.”
-        br
-        |- Mark Twain
-
-    hr
-
-    h3 Educations
-
-    div(class="experiences")
-
-        div(class="experience row")
-            div(class="col-md-4")
-                h4 Vladimir State University
-                p(class="experience-period") September 2003 - June 2009
-
-            div(class="col-md-8")
-                p
-                    strong Information Technology
-                    span(class="hidden-phone")
-                        | Master of Engineering (M.Eng.)
-
-                    span(class="experience-details")
-                        span(class="location")
-                            span(class="glyphicon glyphicon-map-marker")
-                            |Internally
-
-    hr
-
-    h3 Careers
-
-
-div(class="background-white")
-    div(id="abilities" class="container")
-        h2 Abilities
-        p(class="lead")
-            | “Accept the challenges so that you can feel the exhilaration of victory.”
-            br
-            |- George S. Patton
-
+    div(class="background-white")
+        div(id="profile" class="container")
+            h2 Profile
+            p(class="lead") I'm a PHP/JavaScript web developer
             hr
 
-            h3 Skills
+            div(class="row")
+                div(class="col-md-4")
+                    h3 About me
+                    p
+                        | I am an web developer. ....
+
+                div(class="col-md-4 text-center")
+                    img(src="/img/photo.png" alt="Prokofyev Alexander" width="246" height="246")
+
+                div(class="col-md-4")
+                    h3 Details
+                    p
+                        strong Name:
+                        br
+                        |Prokofyev Alexander
+                        br
+                        strong Age:
+                        br
+                        |29 years
+                        br
+                        strong Location:
+                        br
+                        |Vladimir state, Russian Federation
+
+    div(id="experiences" class="container")
+
+        h2 Experiences
+        p(class="lead")
+            |“The secret of getting ahead is getting started.”
+            br
+            |- Mark Twain
+
+        hr
+
+        h3 Educations
+
+        div(class="experiences")
+
+            div(class="experience row")
+                div(class="col-md-4")
+                    h4 Vladimir State University
+                    p(class="experience-period") September 2003 - June 2009
+
+                div(class="col-md-8")
+                    p
+                        strong Information Technology
+                        span(class="hidden-phone")
+                            | Master of Engineering (M.Eng.)
+
+                        span(class="experience-details")
+                            span(class="location")
+                                span(class="glyphicon glyphicon-map-marker")
+                                |Internally
+
+        hr
+
+        h3 Careers
+
+
+    div(class="background-white")
+        div(id="abilities" class="container")
+            h2 Abilities
+            p(class="lead")
+                | “Accept the challenges so that you can feel the exhilaration of victory.”
+                br
+                |- George S. Patton
+
+                hr
+
+                h3 Skills
+
+                div(class="row")
+                    div(class="col-md-6")
+                        ul(class="no-bullets")
+                            li
+                                span(class="ability-title") PHP
+                                span(class="ability-score")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                            li
+                                span(class="ability-title") JavaScript
+                                span(class="ability-score")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                            li
+                                span(class="ability-title") MySQL
+                                span(class="ability-score")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star")
+
+                    div(class="col-md-6")
+                        ul(class="no-bullets")
+                            li
+                                span(class="ability-title") jQuery()
+                                span(class="ability-score")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star")
+                            li
+                                span(class="ability-title") HTML(5)
+                                span(class="ability-score")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star")
+                            li
+                                span(class="ability-title") CSS(3)
+                                span(class="ability-score")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star")
+
+                div(class="text-center project-referal")
+                    p This project is build on Node.js, AngularJS and Twitter Bootstrap.
+                    a(href="https://github.com/ProkofyevAlexander/games" class="btn btn-primary" target="_blank") See project on GitHub
+
+                hr
+
+                h3 Languages
+
+                div(class="row")
+                    div(class="col-md-6")
+                        ul(class="no-bullets")
+                            li
+                                span(class="ability-title") Russian (Mother tongue)
+                                span(class="ability-score")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                            li
+                                span(class="ability-title") English (????)
+                                span(class="ability-score")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star filled")
+                                    span(class="glyphicon glyphicon-star")
+                                    span(class="glyphicon glyphicon-star")
+                hr
+
+                h3 Tools
+
+    div(id="games" class="container")
+
+        h2 Games
+        p(class="lead")
+            |“It does not matter how slowly you go as long as you do not stop.”
+            br
+            |- Confucius
+
+        hr
+
+        h3
+            a(href="/{{lng}}/checkers/") Checkers
+
+
+
+    div(class="background-gray")
+        div(id="contact" class="container")
+            h2 Contact
+            p(class="lead")
+                |“Keep your eyes on the stars, and your feet on the ground.”
+                br
+                |- Theodore Roosevelt
+
+            hr
 
             div(class="row")
                 div(class="col-md-6")
                     ul(class="no-bullets")
                         li
-                            span(class="ability-title") CSS(3)
-                            span(class="ability-score")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-                        li
-                            span(class="ability-title") HTML(5)
-                            span(class="ability-score")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
+                            a(href="https://www.linkedin.com/in/prokofyev-alexander-b2104b36" target="_blank")
+                                span(class="icon icon-linkedin")
+                                |linkedin.com/in/prokofyev-alexander-b2104b36
 
                 div(class="col-md-6")
                     ul(class="no-bullets")
                         li
-                            span(class="ability-title") CSS(3)
-                            span(class="ability-score")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-                        li
-                            span(class="ability-title") HTML(5)
-                            span(class="ability-score")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-
-            div(class="text-center project-referal")
-                p This project is build on Node.js, AngularJS and Twitter Bootstrap.
-                a(href="https://github.com/ProkofyevAlexander/games" class="btn btn-primary" target="_blank") See project on GitHub
+                            a(href="mailto:ur.liam@veyfokorp.a.a")
+                                span(class="icon icon-email")
+                                span(style="unicode-bidi:bidi-override; direction: rtl;") ur.liam@veyfokorp.a.a
 
             hr
 
-            h3 Languages
-
-            div(class="row")
-                div(class="col-md-6")
-                    ul(class="no-bullets")
-                        li
-                            span(class="ability-title") Russian (Mother tongue)
-                            span(class="ability-score")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-                        li
-                            span(class="ability-title") English (????)
-                            span(class="ability-score")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star filled")
-                                span(class="glyphicon glyphicon-star")
-                                span(class="glyphicon glyphicon-star")
-            hr
-
-            h3 Tools
-
-
-div(class="background-gray")
-    div(id="contact" class="container")
-        h2 Contact
-        p(class="lead")
-            |“Keep your eyes on the stars, and your feet on the ground.”
-            br
-            |- Theodore Roosevelt
-
-        hr
-
-        div(class="row")
-            div(class="col-md-6")
-                ul(class="no-bullets")
-                    li
-                        a(href="https://www.linkedin.com/in/prokofyev-alexander-b2104b36" target="_blank")
-                            span(class="icon icon-linkedin")
-                            |linkedin.com/in/prokofyev-alexander-b2104b36
-
-            div(class="col-md-6")
-                ul(class="no-bullets")
-                    li
-                        a(href="mailto:ur.liam@veyfokorp.a.a")
-                            span(class="icon icon-email")
-                            span(style="unicode-bidi:bidi-override; direction: rtl;") ur.liam@veyfokorp.a.a
-
-        hr
-
-        div(class="text-center")
-
-div(class="modal fade" id="upgrade-dialog" tabindex="-1" role="dialog" aria-hidden="true")
-    div(class="modal-dialog")
-        div(class="modal-content")
-            div(class="modal-header")
-                h4(class="modal-title") Your browser is out of date
-            div(class="modal-body")
-                 p
-                    | To get the best possible experience using our site we recommend that you
-                    | upgrade to a modern web browser. To download a newer web browser click on the Upgrade button.
-            div(class="modal-footer")
-                a(href="http://browsehappy.com/" target="_blank" class="btn btn-primary") Upgrade
-
-div(style="display:none;" ng-controller="mainController") &nbsp;
+            div(class="text-center")

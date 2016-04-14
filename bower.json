@@ -14,10 +14,14 @@
   ],
   "dependencies": {
     "requirejs": "^2.2.0",
-    "angular-route": "^1.5.3",
     "angular": "^1.5.3",
+    "angular-route": "^1.5.3",
+    "angular-animate": "^1.5.3",
+    "angular-touch": "^1.5.3",
+    "angular-ui": "^0.4.0",
     "bootstrap": "^3.3.6",
     "html5shiv": "^3.7.3",
-    "respond": "^1.4.2"
+    "respond": "^1.4.2",
+    "angular-scroll": "^1.0.0"
   }
 }
