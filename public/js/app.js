@@ -1,6 +1,32 @@
-define(['routes', 'services/dependencyResolverFor'], function (config, dependencyResolverFor) {
+define(['routes'], function (config) {
 
-    var app = angular.module('app', ['ngRoute','angularCSS']);
+    var dependencyResolverFor = function (dependencies) {
+
+        return {
+            resolver: ['$q', '$rootScope', function ($q, $rootScope) {
+
+                var deferred = $q.defer();
+
+                require(dependencies, function () {
+                    $rootScope.$apply(function () {
+                        deferred.resolve();
+                    });
+                });
+
+                return deferred.promise;
+            }]
+        };
+    };
+
+    var app = angular.module('app', ['ngRoute', 'angularCSS']);
+
+/*    app.controller('appController', ['$scope', function ($scope) {
+
+        $scope.$on('$routeChangeSuccess', function () {
+            $(window).trigger('resize');
+            $(document).trigger('initPage');
+        });
+    }]);*/
 
     app.config([
         '$routeProvider',
@@ -24,12 +50,14 @@ define(['routes', 'services/dependencyResolverFor'], function (config, dependenc
                         templateUrl: route.templateUrl,
                         resolve: dependencyResolverFor(route.dependencies),
                         css: route.css
-                    });
-                });
-            }
+                    })
 
-            if (config.defaultRoutePath !== undefined) {
-                $routeProvider.otherwise({redirectTo: config.defaultRoutePath});
+                });
+                $routeProvider.otherwise({
+                    templateUrl: '/404',
+                    resolve: dependencyResolverFor(['controllers/404']),
+                    css: ['/css/main.css']
+                });
             }
         }
     ]);

@@ -8,10 +8,13 @@ var babel = require('gulp-babel');
 var browserify = require('gulp-browserify');
 var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
+var importPartial = require('postcss-partial-import');
+var SVG = require('postcss-svg');
+var svgo = require('postcss-svgo');
+//var assets  = require('postcss-assets');
 var cssnano = require('cssnano');
 //var initial = require('postcss-initial');
 //var autoreset = require('postcss-autoreset');
-var importPartial = require('postcss-partial-import');
 var singleCharset = require("postcss-single-charset");
 
 //linux & mac: export NODE_ENV=production
@@ -27,6 +30,8 @@ gulp.task('sass', function () {
 
     var processors = [
         importPartial({}),
+        SVG({paths: ['assets/img/']}),
+        svgo,
         autoprefixer,
         singleCharset()
     ];

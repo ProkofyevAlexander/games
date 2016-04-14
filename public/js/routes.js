@@ -1,23 +1,21 @@
 define([], function()
 {
     return {
-        defaultRoutePath: '/:lng',
         routes: {
-            '/:lng': {
-                templateUrl: '/components/main'
+            '/:lng/': {
+                templateUrl: '/components/main',
+                dependencies: ['controllers/main'],
+                css: ['/css/main.css']
             },
-            '/:lng/checkers': {
+            '/:lng/checkers/': {
                 templateUrl: '/components/games/checkers/checkers',
                 dependencies: ['controllers/games/checkers'],
                 css: ['/css/components/games/checkers/checkers.css']
             },
-            '/:lng/checkers-svg': {
+            '/:lng/checkers-svg/': {
                 templateUrl: '/components/games/checkers/checkers-svg',
                 dependencies: ['controllers/games/checkers'],
                 css: ['/css/components/games/checkers/checkers-svg.css']
-            },
-            '/:lng/about': {
-                templateUrl: '/components/main'
             }
         }
     };

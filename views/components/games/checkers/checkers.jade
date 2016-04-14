@@ -1,4 +1,4 @@
-include checkers.svg
+
 div(class='game-checkers' ng-controller='CheckersController as ctrl')
     div(style='display:none;')
         | {{
@@ -17,10 +17,12 @@ div(class='game-checkers' ng-controller='CheckersController as ctrl')
                 - for (var y = 0; y < 8; y++)
                     if y == 0
                         div(class='game-checkers-playground-tile-info')= line_num
-                    div(class='game-checkers-playground-tile _{{ tile#{x}#{y}.getType() }} {{ tile#{x}#{y}.isAvailable() ? "_available" : "" }}' ng-click="ctrl.checkers.moveCheckerToXY(#{x},#{y})")
-                        div(class='game-checkers-checker {{ checker#{x}#{y} != null ? "_" + checker#{x}#{y}.getType() : "" }} {{ checker#{x}#{y} != null && checker#{x}#{y}.isSelected() ? "_selected" : "" }} {{ checker#{x}#{y} != null && !checker#{x}#{y}.isAvailable() ? "_inactive" : "" }} {{ checker#{x}#{y} != null && checker#{x}#{y}.isKing() ? "_king " : "" }}' ng-if='checker#{x}#{y} != null' ng-click='ctrl.checkers.selectCheckerXY(#{x},#{y})')
-                            svg(class="game-checkers-checker-crown" xmlns:xlink="http://www.w3.org/1999/xlink")
-                                use(xlink:href="#crown")
+                    if (x + y) % 2 != 0
+                        div(class='game-checkers-playground-tile _black {{ tile#{x}#{y}.isAvailable() ? "_available" : "" }}' ng-click="ctrl.checkers.moveCheckerToXY(#{x},#{y})")
+                            div(class='game-checkers-checker {{ checker#{x}#{y} != null ? "_" + checker#{x}#{y}.getType() : "" }} {{ checker#{x}#{y} != null && checker#{x}#{y}.isSelected() ? "_selected" : "" }} {{ checker#{x}#{y} != null && !checker#{x}#{y}.isAvailable() ? "_inactive" : "" }} {{ checker#{x}#{y} != null && checker#{x}#{y}.isKing() ? "_king " : "" }}' ng-if='checker#{x}#{y} != null' ng-click='ctrl.checkers.selectCheckerXY(#{x},#{y})')
+                                div(class="game-checkers-checker-crown")
+                    else
+                        div(class='game-checkers-playground-tile _white')
                     if y == 7
                         div(class='game-checkers-playground-tile-info')= line_num
             if x == 7

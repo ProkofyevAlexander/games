@@ -1,20 +1,37 @@
 doctype html
 html
     head
-        title Games
-        base(href='http://localhost:8000/')
-        link(rel='stylesheet' href='/css/layout.css')
-    body
-        div(class='header')
-            div(class='header-logo')
-            input(type='hidden' ng-model='lng' ng-init='lng="#{lng}"')
-            nav(class='header-nav')
-                a(class='header-nav-itm' href='/{{ lng }}/') Main
-                a(class='header-nav-itm' href='/{{ lng }}/checkers') Checkers
-                a(class='header-nav-itm' href='/{{ lng }}/about') About
+        title Prokofyev Alexander personal page
+        base(href="http://localhost:8000/")
+        meta(http-equiv="content-type" content="text/html; charset=UTF-8")
+        meta(http-equiv="content-script-type" content="text/javascript")
+        meta(http-equiv="content-style-type" content="text/css")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        meta(name="author" content="Prokofyev Alexander")
+        meta(name="description" content='')
+        meta(name="keywords" content='')
+        meta(name="robots" content="index, follow")
+        meta(name="revisit-after" content="30 days")
 
-        div(class='main' ng-view)
+        link(href="http://fonts.googleapis.com/css?family=Open+Sans:300,600,700" rel="stylesheet" type="text/css")
+        link(rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css")
+        link(rel="stylesheet" href="/css/layout.css")
 
-        div(class='footer') Footer
+        link(rel="shortcut icon" href="/favicon.ico" type="image/x-icon")
+        link(rel="icon" href="/favicon.ico" type="image/x-icon")
 
-        script(type='text/javascript', src='/requirejs/require.js' data-main='/js/bootstrap.js')
+        |<!--[if lt IE 9]>
+        script(src="/html5shiv/dist/html5shiv.min.js")
+        script(src="/respond/dest/respond.min.js")
+        |<![endif]-->
+        if is404
+            link(rel="stylesheet" href="/css/main.css")
+        else
+            script(type="text/javascript", src="/requirejs/require.js" data-main="/js/bootstrap.js")
+    if is404
+        body
+            include 404
+            script(type="text/javascript", src="/requirejs/require.js" data-main="/js/bootstrap-404.js")
+    else
+        body(ng-view)
+

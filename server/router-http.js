@@ -12,10 +12,15 @@ router.get('/components/*', function (req, res, next) {
 
     res.render('.' + req.originalUrl, {}, function(err, html) {
         if (err) {
-            next('404');
+            return next('404');
         }
         res.send(html);
     });
+});
+
+router.get('/404', function (req, res) {
+
+    res.render('404');
 });
 
 router.get('/', function (req, res) {
@@ -29,18 +34,12 @@ router.get('/:lng/:page?', function (req, res, next) {
         page = req.params['page'];
 
     if (!languages.hasOwnProperty(lng)) {
-        next('404');
+        return next('404');
     }
 
     // Setup page content by AngularJS
     res.render('index', {lng: lng});
-
-    /*if (typeof page == 'undefined') {
-        res.render('index', {lng: lng});
-    }
-    else {
-        next('404');
-    }*/
+    
 });
 
 module.exports = router;

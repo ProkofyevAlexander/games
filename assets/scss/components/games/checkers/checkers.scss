@@ -148,30 +148,23 @@ $tile-info-width: 30px;
     }
 
     &-crown {
+      height: 20px;
+      left: 10px;
       position: absolute;
-      top: 5px;
-      left: 5px;
-      width: 30px;
-      height: 30px;
+      top: 11px;
+      width: 21px;
     }
 
     &._white &-crown {
-      stroke: #000000;
-      fill: #000000;
+      background: svg("assets/img/components/games/checkers/crown", "[fill]: black") 0 0 no-repeat;
     }
 
     &._black &-crown {
-      stroke: #ffffff;
-      fill: #ffffff;
+      background: svg("assets/img/components/games/checkers/crown", "[fill]: white") 0 0 no-repeat;
     }
 
     &:not(._king) &-crown {
       display: none;
     }
   }
-}
-
-.svg-crown-path {
-  fill: inherit;
-  stroke: inherit;
 }
