@@ -106,7 +106,7 @@ $tile-info-width: 30px;
     position: relative;
     top: 50%;
     left: 50%;
-    margin: -21px;
+    margin: -20px;
     height: 40px;
     width: 40px;
     cursor: pointer;
@@ -153,7 +153,6 @@ $tile-info-width: 30px;
     }
 
     &._selected {
-      margin: -22px;
       border: {
         width: 2px;
         color: #fff;
@@ -173,10 +172,16 @@ $tile-info-width: 30px;
 
     &-crown {
       height: 20px;
-      left: 10px;
+      left: 9px;
       position: absolute;
-      top: 11px;
+      top: 10px;
       width: 21px;
+    }
+
+    &._selected &-crown,
+    &:not(._inactive):hover &-crown {
+      left: 8px;
+      top: 9px;
     }
 
     &._white &-crown {
