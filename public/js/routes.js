@@ -7,12 +7,12 @@ define([], function()
                 dependencies: ['controllers/main'],
                 css: ['/css/main.css']
             },
-            '/:lng/checkers/': {
+            '/:lng/games/checkers/': {
                 templateUrl: '/components/games/checkers/checkers',
                 dependencies: ['controllers/games/checkers'],
                 css: ['/css/components/games/checkers/checkers.css']
             },
-            '/:lng/checkers-svg/': {
+            '/:lng/games/checkers-svg/': {
                 templateUrl: '/components/games/checkers/checkers-svg',
                 dependencies: ['controllers/games/checkers'],
                 css: ['/css/components/games/checkers/checkers-svg.css']

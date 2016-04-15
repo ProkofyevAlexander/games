@@ -7,6 +7,19 @@ var languages = {
     ru: 'Русский'
 };
 
+var mainHttpHandler = function (req, res, next) {
+
+    var lng = req.params['lng'];
+
+    if (!languages.hasOwnProperty(lng)) {
+        return next('404');
+    }
+
+    // Setup page content by AngularJS
+    res.render('index', {lng: lng});
+
+};
+
 // AngularJS components
 router.get('/components/*', function (req, res, next) {
 
@@ -28,18 +41,7 @@ router.get('/', function (req, res) {
     res.redirect('/en/');
 });
 
-router.get('/:lng/:page?', function (req, res, next) {
-
-    var lng = req.params['lng'],
-        page = req.params['page'];
-
-    if (!languages.hasOwnProperty(lng)) {
-        return next('404');
-    }
-
-    // Setup page content by AngularJS
-    res.render('index', {lng: lng});
-    
-});
+router.get('/:lng', mainHttpHandler);
+router.get('/:lng/*', mainHttpHandler);
 
 module.exports = router;
