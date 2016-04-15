@@ -1,17 +1,11 @@
 require.config({
     baseUrl: '/js',
     paths: {
-        'twitter-bootstrap': '/bootstrap/dist/js/bootstrap.min',
         'jquery': '/jquery/dist/jquery.min'
-    },
-    shim: {
-        'twitter-bootstrap': {
-            deps: ['jquery']
-        }
     }
 });
 
-require(['twitter-bootstrap'], function () {
+require(['jquery'], function () {
     
     function lazyLoad($poContainer) {
 

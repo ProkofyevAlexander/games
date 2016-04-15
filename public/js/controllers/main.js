@@ -108,72 +108,6 @@ define(['app'], function (app) {
             }
         };
 
-        /* IE7- FALLBACK FUNCTIONS */
-
-        var checkBrowser = function () {
-
-            /*var loBrowserVersion = getBrowserAndVersion();
-
-            if (loBrowserVersion.browser == 'Explorer' && loBrowserVersion.version < 8) {
-
-                $uibModal.open({
-                    animation: $scope.animationsEnabled,
-                    templateUrl: 'upgradeDialog.html'
-                });
-
-                /!*$('#upgrade-dialog').modal({
-                    backdrop: 'static',
-                    keyboard: false
-                });*!/
-            }*/
-        };
-
-        var getBrowserAndVersion = function () {
-
-            var laBrowserData = [{
-                string: navigator.userAgent,
-                subString: 'MSIE',
-                identity: 'Explorer',
-                versionSearch: 'MSIE'
-            }];
-
-            return {
-                browser: searchString(laBrowserData) || 'Modern Browser',
-                version: searchVersion(navigator.userAgent) || searchVersion(navigator.appVersion) || '0.0'
-            };
-        };
-
-        var searchString = function (paData) {
-
-            for (var i = 0, i_max = paData.length; i < i_max; i++) {
-
-                var lstrDataString = paData[i].string;
-                var lstrDataProp = paData[i].prop;
-
-                this.versionSearchString = paData[i].versionSearch || paData[i].identity;
-
-                if (lstrDataString) {
-                    if (lstrDataString.indexOf(paData[i].subString) != -1) {
-                        return paData[i].identity;
-                    }
-                }
-                else if (lstrDataProp) {
-                    return paData[i].identity;
-                }
-            }
-        };
-
-        var searchVersion = function(pstrDataString) {
-
-            var lnIndex = pstrDataString.indexOf(this.versionSearchString);
-
-            if (lnIndex == -1) {
-                return;
-            }
-
-            return parseFloat(pstrDataString.substring(lnIndex + this.versionSearchString.length + 1));
-        };
-
         var initPage = function () {
 
             console.log('initPage');
@@ -187,7 +121,6 @@ define(['app'], function (app) {
             applyMailTo();
             applyResize();
             checkHash();
-            checkBrowser();
         };
 
         setTimeout(initPage, 200);
