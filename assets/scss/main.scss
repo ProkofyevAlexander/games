@@ -1,17 +1,11 @@
-$theme-main-color: #5E104B;
-$theme-button-hover-color: #9D4E89;
-$theme-active-color: #3F002F;
-
-h2, h3 {
-  color: $theme-main-color;
-}
+@import "theme";
 
 p.lead {
   text-align: center;
   color: #727878;
 
   a {
-    color: #FFFFFF;
+    color: $theme-button-text-color;
     text-decoration: underline;
 
     &:hover {
@@ -44,16 +38,16 @@ hr {
 
 .btn-primary {
   background-color: $theme-main-color;
-  border-color: $theme-active-color;
+  border-color: $theme-button-bg_active;
 
   &:hover {
-    background-color: $theme-button-hover-color;
-    border-color: $theme-button-hover-color;
+    background-color: $theme-button-bg_hover;
+    border-color: $theme-button-bg_hover;
   }
   &.focus:active,
   &:active {
-    background-color: $theme-active-color;
-    border-color: $theme-active-color;
+    background-color: $theme-button-bg_active;
+    border-color: $theme-button-bg_active;
   }
 }
 
@@ -193,7 +187,7 @@ hr {
         text-align: center;
         padding-top: 30px;
         font-weight: 600;
-        color: #FFFFFF;
+        color: $theme-button-text-color;
 
         &:hover,
         &:focus {
@@ -217,8 +211,8 @@ hr {
     a,
     a:hover,
     a:focus {
-      background: $theme-main-color;
-      color: #FFFFFF;
+      background: $theme-button-bg;
+      color: $theme-button-text-color;
     }
   }
 
@@ -288,7 +282,7 @@ hr {
 #abilities {
   ul > li {
     min-height: 30px;
-    padding: 3px 0px;
+    padding: 3px 0;
 
     &:hover {
       background: #F2F2F2;
@@ -319,72 +313,105 @@ hr {
   }
 }
 
+#games {
+
+  .row {
+    & > div {
+
+      padding: 20px;
+
+      text-align: center;
+
+      a {
+
+        img {
+          border: 2px transparent solid;
+        }
+
+        &:hover {
+          img {
+            border-color: $theme-main-color;
+          }
+        }
+      }
+    }
+  }
+}
+
 #contact {
+
   padding-bottom: 200px;
-}
 
-#contact h2, #contact .row * {
-  color: #FFFFFF;
-}
+  h2,
+  .row * {
+    color: #FFFFFF;
+  }
+  a {
+    display: block;
+    line-height: 32px;
+    margin-bottom: 20px;
+    opacity: 0.6;
+    filter: alpha(opacity=60);
 
-#contact a {
-  display: block;
-  line-height: 32px;
-  margin-bottom: 20px;
-  opacity: 0.6;
-  filter: alpha(opacity=60);
-}
+    &:hover {
+      opacity: 1;
+      filter: alpha(opacity=100);
+      text-decoration: none;
+    }
 
-#contact a .icon {
-  float: left;
-  margin-right: 20px;
-}
-
-#contact a:hover {
-  opacity: 1;
-  filter: alpha(opacity=100);
-  text-decoration: none;
+    .icon {
+      float: left;
+      margin-right: 20px;
+    }
+  }
 }
 
 @media (max-width: 1200px) {
   #interests .interest-content {
-    padding: 20px 0px;
+    padding: 20px 0;
   }
 }
 
 @media (max-width: 767px) {
-  .jumbotron:before {
-    bottom: 100px;
-    left: 20px;
-    right: 20px;
-    top: 20px;
-  }
-  .jumbotron .container {
-    top: 20%;
-    padding-top: 0px;
-  }
-  .jumbotron .scroll-down {
-    width: 100%;
-    right: 0px;
+
+  .jumbotron {
+    &:before {
+      bottom: 100px;
+      left: 20px;
+      right: 20px;
+      top: 20px;
+    }
+
+    .container {
+      top: 20%;
+      padding-top: 0;
+    }
+
+    .scroll-down {
+      width: 100%;
+      right: 0;
+    }
   }
 
   .navbar {
-    left: 0px;
+    left: 0;
     width: 100%;
-  }
-  .navbar .nav > li {
-    height: 60px;
-  }
-  .navbar .nav > li a {
-    height: 60px;
-    text-align: center;
-    padding-top: 20px;
-    font-weight: 600;
-    color: #FFFFFF;
+
+    .nav > li {
+      height: 60px;
+
+      a {
+        height: 60px;
+        text-align: center;
+        padding-top: 20px;
+        font-weight: 600;
+        color: $theme-button-text-color;
+      }
+    }
   }
 
   .fixed .navbar {
-    top: 0px;
+    top: 0;
   }
 
   .container {
@@ -399,39 +426,45 @@ hr {
     text-align: center;
   }
 
-  #experiences .experience .experience-details > span {
-    display: block;
-    margin-bottom: 6px;
-  }
-  #experiences .experience .experience-details .seperator {
-    display: none;
+  #experiences .experience .experience-details {
+    & > span {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .seperator {
+      display: none;
+    }
   }
 
-  #interests .left {
-    float: none;
-  }
-  #interests .right {
-    float: none;
-  }
+  #interests {
+    .left,
+    .right {
+      float: none;
+    }
 
-  #interests > * {
-    text-align: center;
-  }
-  #interests img {
-    width: 50%;
-    height: auto;
-    float: none !important;
-  }
-  #interests .interest-content {
-    padding: 20px 0px;
+    & > * {
+      text-align: center;
+    }
+
+    img {
+      width: 50%;
+      height: auto;
+      float: none !important;
+    }
+
+    .interest-content {
+      padding: 20px 0;
+    }
   }
 
   #contact {
     padding-bottom: 60px;
-  }
-  #contact a .icon {
-    float: left;
-    margin-right: 10px;
+
+    a .icon {
+      float: left;
+      margin-right: 10px;
+    }
   }
 }
 

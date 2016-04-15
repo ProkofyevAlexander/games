@@ -1,3 +1,5 @@
+@import "theme";
+
 html, body {
   color: #434242;
   font-family: 'Open Sans', sans-serif !important;
@@ -22,7 +24,7 @@ h1, h4 {
 
 h2, h3 {
   font-weight: 300;
-  color: #22A39F;
+  color: $theme-main-color;
 }
 
 h2 {
@@ -32,4 +34,34 @@ h2 {
 
 h3 {
   font-size: 28px;
+}
+
+.games-back-button {
+  position: fixed;
+  top: 0;
+  left: 6%;
+  background: $theme-button-bg;
+  overflow: hidden;
+
+  border-bottom: {
+    left-radius: 4px;
+    right-radius: 4px;
+  }
+
+  a,
+  a:hover,
+  a:active {
+    padding: 6px 10px;
+    color: $theme-button-text-color;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  a:hover {
+    background: $theme-button-bg_hover
+  }
+
+  a:active {
+    background: $theme-button-bg_active;
+  }
 }

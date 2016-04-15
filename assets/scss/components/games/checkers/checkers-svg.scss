@@ -4,14 +4,25 @@ $tile-size: 50px;
 $row-info-height: 30px;
 $tile-info-width: 30px;
 
+.container {
+  max-width: 1280px;
+  padding: 0 180px;
+}
+
+@media (max-width: 767px) {
+  .container {
+    padding: 0 20px;
+    min-width: 400px;
+  }
+}
+
 .game-checkers {
 
   svg {
 
     height: 100%;
     width: 100%;
-    max-width: 90vw;
-    max-height: 70vh;
+    max-height: 80vh;
   }
 }
 
