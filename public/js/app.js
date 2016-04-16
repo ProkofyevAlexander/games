@@ -18,65 +18,6 @@ define(['routes'], function (config) {
         };
     };
 
-    var searchString = function (paData) {
-
-        for (var i = 0, i_max = paData.length; i < i_max; i++) {
-
-            var lstrDataString = paData[i].string;
-            var lstrDataProp = paData[i].prop;
-
-            this.versionSearchString = paData[i].versionSearch || paData[i].identity;
-
-            if (lstrDataString) {
-                if (lstrDataString.indexOf(paData[i].subString) != -1) {
-                    return paData[i].identity;
-                }
-            }
-            else if (lstrDataProp) {
-                return paData[i].identity;
-            }
-        }
-    };
-
-    var searchVersion = function(pstrDataString) {
-
-        var lnIndex = pstrDataString.indexOf(this.versionSearchString);
-
-        if (lnIndex == -1) {
-            return;
-        }
-
-        return parseFloat(pstrDataString.substring(lnIndex + this.versionSearchString.length + 1));
-    };
-
-    var getBrowserAndVersion = function () {
-
-        var laBrowserData = [{
-            string: navigator.userAgent,
-            subString: 'MSIE',
-            identity: 'Explorer',
-            versionSearch: 'MSIE'
-        }];
-
-        return {
-            browser: searchString(laBrowserData) || 'Modern Browser',
-            version: searchVersion(navigator.userAgent) || searchVersion(navigator.appVersion) || '0.0'
-        };
-    };
-
-    var checkBrowser = function ($scope, $uibModal) {
-
-        var loBrowserVersion = getBrowserAndVersion();
-
-        if (loBrowserVersion.browser == 'Explorer' && loBrowserVersion.version < 8) {
-
-            $uibModal.open({
-                animation: false,
-                templateUrl: 'upgradeDialog.html'
-            });
-        }
-    };
-
     var app = angular.module('app', ['ngRoute', 'angularCSS', 'ui.bootstrap', 'duScroll']);
 
     app.config([
@@ -112,12 +53,8 @@ define(['routes'], function (config) {
             }
         }
     ]);
-    
-    app.controller('appController', ['$scope', '$uibModal', function($scope, $uibModal){
-        checkBrowser($scope, $uibModal);
-    }]);
 
-    app.run(function ($rootScope) {
+/*    app.run(function ($rootScope) {
 
         if (!window.history || !history.replaceState) {
             return;
@@ -125,14 +62,14 @@ define(['routes'], function (config) {
 
         $rootScope.$on('duScrollspy:becameActive', function ($event, $element, $target) {
 
-            //Automaticly update location
+            //Automatically update location
             var hash = $element.attr('du-scrollspy');
             if (hash) {
-                //console.log(hash);
-                history.replaceState(null, null, window.location.pathname + '#' + hash);
+                console.log(hash);
+                history.replaceState(null, '', window.location.pathname + '#' + hash);
             }
         });
-    });
+    });*/
 
     return app;
 });

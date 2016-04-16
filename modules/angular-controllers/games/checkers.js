@@ -15,7 +15,9 @@ define(['app'], function (app) {
         return aKeys[nIdx];
     };
 
-    app.controller('CheckersController', ['$scope', function ($scope) {
+    var gameType = null;
+
+    app.controller('CheckersController', ['$scope', '$uibModal', function ($scope, $uibModal) {
 
         var checkers = new Checkers();
 
@@ -24,5 +26,24 @@ define(['app'], function (app) {
         this.checkers = checkers;
         this.playground = checkers.getPlayground();
 
+        if (gameType == null) {
+            $uibModal.open({
+                animation: false,
+                templateUrl: 'changeGameType.html',
+                controller: 'GameTypeFormController'
+            });
+        }
+
+    }]);
+
+    app.controller('GameTypeFormController', ['$scope', '$uibModalInstance', '$route', function ($scope, $uibModalInstance, $route) {
+        $scope.gameType = 'local';
+        $scope.continue = function() {
+            gameType = $scope.gameType;
+            $uibModalInstance.close($scope.gameType);
+        };
+        $scope.$on('$routeChangeStart', function(next, current) {
+            $uibModalInstance.dismiss();
+        });
     }]);
 });

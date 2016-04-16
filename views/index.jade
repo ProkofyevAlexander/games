@@ -2,8 +2,7 @@ doctype html
 html
     head
         title Prokofyev Alexander personal page
-        //@TODO Get base from config
-        base(href="http://localhost:8000/")
+        base(href="http://#{host}/")
         meta(http-equiv="content-type" content="text/html; charset=UTF-8")
         meta(http-equiv="content-script-type" content="text/javascript")
         meta(http-equiv="content-style-type" content="text/css")
@@ -34,16 +33,6 @@ html
             include 404
             script(type="text/javascript", src="/requirejs/require.js" data-main="/js/bootstrap-404.js")
     else
-        body(ng-controller="appController")
+        body
 
             div(ng-init="lng='#{lng}'" ng-view)
-
-            script(type="text/ng-template" id="upgradeDialog.html")
-                div(class="modal-header")
-                    h4(class="modal-title") Your browser is out of date
-                div(class="modal-body")
-                    p
-                        | To get the best possible experience using our site we recommend that you
-                        | upgrade to a modern web browser. To download a newer web browser click on the Upgrade button.
-                div(class="modal-footer")
-                    a(href="http://browsehappy.com/" target="_blank" class="btn btn-primary") Upgrade

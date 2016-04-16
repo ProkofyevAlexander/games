@@ -12,7 +12,7 @@ require.config({
     },
     shim: {
         'app': {
-            deps: ['angular', 'angular-route', 'angular-ui-bootstrap-tpls', 'angular-css', 'jquery', 'angular-scroll']
+            deps: ['angular', 'angular-route', 'angular-ui-bootstrap-tpls', 'angular-css', 'angular-scroll', 'jquery']
         },
         'angular-route': {
             deps: ['angular']

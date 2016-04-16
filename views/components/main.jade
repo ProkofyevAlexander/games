@@ -14,14 +14,14 @@ div(ng-controller="mainController")
 
         // Brand and toggle get grouped for better mobile display
         div(class="navbar-header")
-            button(type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse")
+            button(type="button" class="navbar-toggle" ng-click="isCollapsed = !isCollapsed")
                 span(class="sr-only") Toggle navigation
                 span(class="icon-bar")
                 span(class="icon-bar")
                 span(class="icon-bar")
 
         // Collect the nav links, forms, and other content for toggling
-        div(class="collapse navbar-collapse navbar-ex1-collapse")
+        div(class="collapse navbar-collapse" uib-collapse="isCollapsed")
             ul(class="nav navbar-nav")
                 li(du-scrollspy="profile" class="active")
                     a(href="#profile") Profile

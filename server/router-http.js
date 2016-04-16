@@ -1,5 +1,6 @@
 var express = require('express'),
-    config = require('./config');
+    config = require('./config'),
+    log = require('./logger');
 var router = express.Router();
 
 var languages = {
@@ -16,15 +17,30 @@ var mainHttpHandler = function (req, res, next) {
     }
 
     // Setup page content by AngularJS
-    res.render('index', {lng: lng});
+    res.render('index', {host: config.express.host, lng: lng}, function(err, html) {
+        if (err) {
+            log.error({
+                type: 'templateError',
+                error_description: err
+            }, 'Template error');
+            return next('404');
+        }
+        res.send(html);
+    });
 
 };
 
 // AngularJS components
 router.get('/components/*', function (req, res, next) {
 
-    res.render('.' + req.originalUrl, {}, function(err, html) {
+    var template = req.originalUrl.replace('/components/', 'components/');
+
+    res.render(template, {}, function(err, html) {
         if (err) {
+            log.error({
+                type: 'templateError',
+                error_description: err
+            }, 'Template error');
             return next('404');
         }
         res.send(html);
@@ -33,7 +49,16 @@ router.get('/components/*', function (req, res, next) {
 
 router.get('/404', function (req, res) {
 
-    res.render('404');
+    res.render('404', {}, function(err, html) {
+        if (err) {
+            log.error({
+                type: 'templateError',
+                error_description: err
+            }, 'Template error');
+            return res.send('404 - Page not found');
+        }
+        res.send(html);
+    });
 });
 
 router.get('/', function (req, res) {

@@ -1,11 +1,11 @@
 div(class="games-back-button")
     a(href="/{{lng}}/#games") <<
 
-div(class="container")
+div(class="container" ng-controller="CheckersController as ctrl")
 
     h2 Checkers
 
-    div(class="game-checkers" ng-controller="CheckersController as ctrl")
+    div(class="game-checkers")
         div(style="display:none;")
             | {{
             - for (var x = 0; x < 8; x++)
@@ -42,3 +42,18 @@ div(class="container")
                             include inc-row-info
 
             div(class="col-md-3")
+
+    script(type="text/ng-template" id="changeGameType.html")
+        div(class="modal-header")
+            h4(class="modal-title") Please select game type
+        div(class="modal-body")
+            form(name="gameTypeForm")
+                label
+                    input(type="radio" ng-model="gameType" value="local")
+                    |Local
+                br
+                label
+                    input(type="radio" ng-model="gameType" value="online")
+                    |Online
+        div(class="modal-footer")
+            button(class="btn btn-primary" ng-click="continue()") Continue

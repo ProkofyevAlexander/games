@@ -2,6 +2,8 @@ define(['app'], function (app) {
 
     app.controller('mainController', ['$scope', function ($scope) {
 
+        $scope.isCollapsed = true;
+
         var lnStickyNavigation,
             $body,
             $jumbotron,
@@ -40,13 +42,10 @@ define(['app'], function (app) {
         };
 
         var applyNavigationFixForPhone = function () {
-
-            var $navbarCollapse = $('.navbar-collapse');
-
-            $navbarCollapse.on('click');
-
-            $navbarLi.find('a').click(function () {
-                $navbarCollapse.removeClass('in').addClass('collapse');
+            $navbarLi.find('a').on('click', function () {
+                $scope.$apply(function () {
+                    $scope.isCollapsed = true;
+                });
             });
         };
 
@@ -110,7 +109,6 @@ define(['app'], function (app) {
 
         var initPage = function () {
 
-            console.log('initPage');
             $body = $('body');
             $jumbotron = $body.find('.jumbotron');
             $navbarLi = $body.find('.navbar li');
