@@ -19,12 +19,23 @@ npm install gulp bower -g
 git clone https://github.com/ProkofyevAlexander/games.git
 ```
 
-## Run
+## Run and stop
 
 ### Gulp tasks
 
+Run in background for development purposes (Gulp is watching for files
+changes and handle these on the fly).
+
 ```sh
 gulp
+```
+
+Ctrl+C to stop process.
+
+Prepare public files on production
+
+```sh
+gulp prepare_public
 ```
 
 ### Node.js server
@@ -32,10 +43,18 @@ gulp
 ```sh
 sudo -E su
 export EXPRESS_HOST=<your_domain>
+npm start
+```
+
+Ctrl+C to stop process.
+
+For run server as background process use:
+
+```sh
 nohup npm start &
 ```
 
-## Kill
+For kill background process:
 
 ```sh
 ps -a
