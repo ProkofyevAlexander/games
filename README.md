@@ -4,41 +4,41 @@
 
 1. Install Node.js and npm
 
-```bash
-# curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
-# sudo apt-get install -y nodejs
+```{r, engine='bash', count_lines}
+curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
+sudo apt-get install -y nodejs
 ```
 
 2. Install Gulp and Bower
-```bash
-# npm install gulp bower -g
+```{r, engine='bash', count_lines}
+npm install gulp bower -g
 ```
 
 3. Clone project from GitHub
-```bash
-# git clone https://github.com/ProkofyevAlexander/games.git
+```{r, engine='bash', count_lines}
+git clone https://github.com/ProkofyevAlexander/games.git
 ```
 
 ## Run
 
 ### Gulp tasks
 
-```bash
-# gulp
+```{r, engine='bash', count_lines}
+gulp
 ```
 
 ### Node.js server
 
-```bash
-# sudo -E su
-# export EXPRESS_HOST=<your_domain>
-# nohup npm start &
+```{r, engine='bash', count_lines}
+sudo -E su
+export EXPRESS_HOST=<your_domain>
+nohup npm start &
 ```
 
 ## Kill
 
-```bash
-# ps -a
+```{r, engine='bash', count_lines}
+ps -a
   PID TTY          TIME CMD
  5936 pts/0    00:00:00 sudo
  5937 pts/0    00:00:00 su
@@ -48,5 +48,5 @@
  5968 pts/0    00:00:01 node
  5969 pts/0    00:00:00 node
  6058 pts/0    00:00:00 ps
-# kill -9 5968
+kill -9 5968
 ```
