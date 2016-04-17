@@ -26,7 +26,7 @@ define(['app'], function (app) {
         this.checkers = checkers;
         this.playground = checkers.getPlayground();
 
-        if (gameType == null) {
+        if (false && gameType == null) {
             $uibModal.open({
                 animation: false,
                 templateUrl: 'changeGameType.html',
@@ -38,11 +38,18 @@ define(['app'], function (app) {
 
     app.controller('GameTypeFormController', ['$scope', '$uibModalInstance', '$route', function ($scope, $uibModalInstance, $route) {
         $scope.gameType = 'local';
-        $scope.continue = function() {
+        $scope.continue = function () {
             gameType = $scope.gameType;
             $uibModalInstance.close($scope.gameType);
+            if (gameType == 'online') {
+                window.socket = io.connect('http://games.dev:8000');
+                socket.on('news', function (data) {
+                    console.log(data);
+                    socket.emit('my other event', {my: 'data'});
+                });
+            }
         };
-        $scope.$on('$routeChangeStart', function(next, current) {
+        $scope.$on('$routeChangeStart', function (next, current) {
             $uibModalInstance.dismiss();
         });
     }]);

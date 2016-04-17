@@ -16,7 +16,8 @@ config.dir = {
     log: path.join(dir_base, 'log'),
     view: path.join(dir_base, 'views'),
     bower: path.join(dir_base, 'bower_components'),
-    public: path.join(dir_base, 'public')
+    public: path.join(dir_base, 'public'),
+    io: path.join(dir_base, 'node_modules/socket.io-client')
 };
 
 // ensure log directory exists
