@@ -1,0 +1,12 @@
+//
+   Created by Alexander on 18.04.2016.
+
+div(class="first-page-box" ng-controller="PageController")
+    div(class="first-page-data")
+        h2 Commute Calculator
+        div(ng-repeat="(index, address) in addresses")
+            div(class="first-page-address-block")
+                input(ng-model="address.val" placeholder="Address {{ index+1 }}")
+                a(ng-click="removeAddress(index)") x
+
+        a(class="first-page-address-add" ng-click="addAddress()") Add new address +

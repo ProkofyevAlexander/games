@@ -1,0 +1,72 @@
+$place-holder-color: #777;
+
+.first-page {
+
+  &-box {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 100vh;
+  }
+
+  &-address-block {
+
+    position: relative;
+
+    input {
+
+      padding: 4px;
+      width: 100%;
+      margin: 8px;
+
+      ::-webkit-input-placeholder {
+        color: #777;
+      }
+
+      :-moz-placeholder { /* Firefox 18- */
+        color: $place-holder-color;
+      }
+
+      ::-moz-placeholder {  /* Firefox 19+ */
+        color: $place-holder-color;
+      }
+
+      :-ms-input-placeholder {
+        color: $place-holder-color;
+      }
+    }
+
+    a {
+      position: absolute;
+      top: 9px;
+      right: 5px;
+      margin-left: -40px;
+      font-size: 20px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
+
+  &-address-add,
+  &-address-add:hover {
+    cursor: pointer;
+    background-color: #000088;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    padding: 8px;
+    width: 100%;
+    margin: 8px;
+    display: inline-block;
+  }
+
+  &-data {
+
+    h2 {
+      font-size: 16px;
+      font-weight: bold;
+    }
+   }
+}
