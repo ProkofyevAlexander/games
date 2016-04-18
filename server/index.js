@@ -44,6 +44,7 @@ redirect.use(function (req, res) {
 var vhostApp = express();
 
 vhostApp.use(vhost('*.fastvps-server.com', redirect));
+vhostApp.use(vhost('fastvps-server.com', redirect));
 vhostApp.use(vhost('*.' + config.express.host, redirect));
 vhostApp.use(vhost(config.express.host, app));
 
