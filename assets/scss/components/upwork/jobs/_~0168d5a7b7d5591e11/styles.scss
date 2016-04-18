@@ -1,0 +1,139 @@
+$light-green: #6bc729;
+$dark-green: #5fbb1c;
+$page-max-width: 1024px;
+$page-data-padding: 60px;
+$block-margin: 6px;
+$header-text-color: #ffffff;
+$page-block-bg: #ffffff;
+
+.content {
+  max-width: $page-max-width;
+  margin: 0 auto;
+}
+
+.header {
+
+  background-color: $light-green;
+
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  align-items: stretch;
+
+  height: 90px;
+
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 0;
+    color: $header-text-color;
+  }
+
+  &-logo {
+    flex-basis: 200px;
+    text: {
+      align: center;
+      transform: uppercase;
+    }
+    font: {
+      weight: bold;
+      size: 26px;
+    }
+  }
+
+  &-masters {
+    flex-basis: 134px;
+    background-color: $dark-green;
+  }
+
+  &-search {
+    flex-basis: 100px;
+    flex-grow: 1;
+  }
+
+  &-user {
+    flex-basis: 244px;
+    margin-right: 10%;
+    background-color: $dark-green;
+  }
+}
+
+.page-data {
+
+  a {
+    text-decoration: none;
+    color: $light-green;
+  }
+  a:hover {
+    text-decoration: underline;
+    color: $dark-green;
+  }
+
+  padding: $page-data-padding - ($block-margin * 2);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: stretch;
+
+  &_block {
+
+    padding: 6px;
+
+    > div {
+      background: $page-block-bg;
+      min-height: 180px;
+      padding: 20px;
+    }
+  }
+
+  &-user {
+
+    flex-grow: 1;
+
+    &-box {
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    &-image {
+      flex-grow: 0;
+      min-width: 102px;
+      flex-basis: 102px;
+      height: 102px;
+      background-color: #ac2925;
+      border-radius: 50%;
+      margin-left: 20px;
+    }
+
+    &-info {
+      flex-grow: 1;
+      margin-left: 40px;
+
+      &-name {
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      &-data {
+        font-size: 12px;
+      }
+    }
+
+    &-score {
+      flex-grow: 0;
+      min-width: 150px;
+      height: 150px;
+      flex-basis: 150px;
+      background-color: #f8f5e2;
+    }
+  }
+
+  &-share {
+    flex-grow: 0;
+  }
+
+
+}

@@ -4,7 +4,7 @@ var fs = require('fs'),
 var config = module.exports;
 
 config.express = {
-    port: process.env.EXPRESS_PORT || 80,
+    port: process.env.EXPRESS_PORT || 8080,
     ip: '0.0.0.0',
     host: process.env.EXPRESS_HOST || 'games.dev'
 };
