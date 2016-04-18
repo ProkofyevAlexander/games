@@ -57,15 +57,9 @@ nohup npm start &
 For kill background process:
 
 ```sh
-ps -a
-  PID TTY          TIME CMD
- 5936 pts/0    00:00:00 sudo
- 5937 pts/0    00:00:00 su
- 5938 pts/0    00:00:00 bash
- 5958 pts/0    00:00:00 npm
- 5967 pts/0    00:00:00 sh
- 5968 pts/0    00:00:01 node
- 5969 pts/0    00:00:00 node
- 6058 pts/0    00:00:00 ps
+ps aux | grep node
+root      5967  0.0  0.0   4396   652 ?        S    Apr17   0:00 sh -c node ./server/server.js | ./node_modules/.bin/bunyan
+root      5968  0.0  5.2 986704 55208 ?        Sl   Apr17   0:07 node ./server/server.js
+root      5969  0.0  1.6 780896 17584 ?        Sl   Apr17   0:00 node ./node_modules/.bin/bunyan
 kill -9 5968
 ```
