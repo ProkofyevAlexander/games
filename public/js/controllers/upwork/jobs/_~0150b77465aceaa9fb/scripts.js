@@ -4,13 +4,6 @@
 
 define(['app'], function (app) {
 
-    if (!Array.prototype.remove) {
-        Array.prototype.remove = function(val) {
-            var i = this.indexOf(val);
-            return i>-1 ? this.splice(i, 1) : [];
-        };
-    }
-
     app.controller('PageController', ['$scope', function($scope){
         $scope.addresses = [
             {val: ''},
@@ -18,7 +11,6 @@ define(['app'], function (app) {
         ];
 
         $scope.removeAddress = function (index) {
-            console.log('Remove', index);
             $scope.addresses.splice(index, 1);
         };
 
