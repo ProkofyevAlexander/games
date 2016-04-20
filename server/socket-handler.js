@@ -30,7 +30,7 @@ module.exports = (io) => {
 
             //console.log('on connectTo', data);
 
-            if (data.hasOwnProperty('roomId') && io.nsps['/'].adapter.rooms[data.roomId].length == 1) {
+            //if (data.hasOwnProperty('roomId') && io.nsps['/'].adapter.rooms[data.roomId].length == 1) {
 
                 roomId = data.roomId;
 
@@ -45,11 +45,11 @@ module.exports = (io) => {
 
                 //console.log('emit successConnection', data);
                 io.to(roomId).emit('successConnection');
-            }
-            else {
+            //}
+            //else {
                 //console.log('emit roomDoesNotExists');
-                socket.emit('roomDoesNotExists');
-            }
+            //    socket.emit('roomDoesNotExists');
+            //}
         });
 
         socket.on('action', function (data) {
