@@ -1,24 +1,23 @@
 var express = require('express'),
     vhost = require('vhost'),
     config = require('./config'),
-    access_logger = require('./access-logger'),
-    error_handler = require('./error-handler')/*,
-    redis = require('socket.io-redis')*/;
+    accessLogger = require('./access-logger'),
+    errorHandler = require('./error-handler'),
+    socketHandler = require('./socket-handler');
 
 var app = express();
 
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
-//io.adapter(redis({ host: 'localhost', port: 6379 }));
 
 server.listen(8000);
 
-io.on('connection', require('./socket-handler'));
+io.on('connection', socketHandler(io));
 
 app.set('views', config.dir.view);
 app.set('view engine', 'jade');
 
-app.use(access_logger);
+app.use(accessLogger);
 
 var static_options = {
     "dotfiles": "ignore"
@@ -33,7 +32,7 @@ app.use('/',
 
 app.use('/', require('./router-http'));
 
-app.use(error_handler);
+app.use(errorHandler);
 
 var redirect = express();
 

@@ -7,7 +7,7 @@ define([], function()
                 dependencies: ['controllers/main'],
                 css: ['/css/main.css']
             },
-            '/:lng/games/checkers/': {
+            '/:lng/games/checkers/:roomId?': {
                 templateUrl: '/components/games/checkers/checkers',
                 dependencies: ['controllers/games/checkers'],
                 css: ['/css/components/games/checkers/checkers.css']

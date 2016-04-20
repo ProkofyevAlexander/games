@@ -8,7 +8,9 @@ module.exports = class Checkers {
 
     constructor() {
 
-        this.current_player = Checker.getTypeWhite();
+        this.onlinePlayerType = null;
+
+        this.currentPlayer = Checker.getTypeWhite();
 
         this.selectedTile = null;
 
@@ -27,31 +29,53 @@ module.exports = class Checkers {
                 this.blackTiles.push(tile);
 
                 if (coordinates.getX() < 3) {
-                    tile.setChecker(new Checker(Checker.getTypeBlack(), coordinates, this.current_player == Checker.getTypeBlack()));
+                    tile.setChecker(new Checker(Checker.getTypeBlack(), coordinates, this.currentPlayer == Checker.getTypeBlack()));
                 }
                 else if (coordinates.getX() > 4) {
-                    tile.setChecker(new Checker(Checker.getTypeWhite(), coordinates, this.current_player == Checker.getTypeWhite()));
+                    tile.setChecker(new Checker(Checker.getTypeWhite(), coordinates, this.currentPlayer == Checker.getTypeWhite()));
                 }
             }
         });
-
     };
 
+    isPlayerActive() {
+        return this.onlinePlayerType == null || this.onlinePlayerType == this.currentPlayer;
+    }
+
+    setOnlinePlayerType(playerType) {
+
+        if (playerType == Checker.getTypeWhite() || playerType == Checker.getTypeBlack()) {
+            this.onlinePlayerType = playerType;
+
+            this.blackTiles.forEach(tile => {
+
+                if (tile.getChecker() != null) {
+                    var checker = tile.getChecker();
+                    checker.setAvailable(checker.getType() == this.getCurrentPlayer() && this.isPlayerActive());
+                }
+            });
+        }
+
+        return this;
+    }
+
     getCurrentPlayer() {
-        return this.current_player;
+        return this.currentPlayer;
     };
 
     getPlayground() {
         return this.playground;
     };
 
-    selectCheckerXY(x, y) {
+    selectCheckerXY(x, y, byOpponent) {
+
+        byOpponent = !!byOpponent;
 
         var coordinates = new Coordinates(x, y),
             selectedTile = this.playground.getTile(coordinates),
             selectedChecker = selectedTile.getChecker();
 
-        if (selectedChecker == null || !selectedChecker.isAvailable()) return false;
+        if (selectedChecker == null || (!selectedChecker.isAvailable() && !byOpponent)) return false;
 
         this.selectedTile = selectedTile;
 
@@ -70,7 +94,9 @@ module.exports = class Checkers {
         return true;
     };
 
-    moveCheckerToXY(x, y) {
+    moveCheckerToXY(x, y, byOpponent) {
+
+        byOpponent = !!byOpponent;
 
         var toCoordinates = new Coordinates(x, y),
             toTile = this.playground.getTile(toCoordinates);
@@ -79,7 +105,7 @@ module.exports = class Checkers {
 
         var selectedChecker = this.selectedTile.getChecker();
 
-        if (selectedChecker == null) return false;
+        if (selectedChecker == null || (!byOpponent && !selectedChecker.isAvailable())) return false;
 
         selectedChecker = selectedChecker.clone();
         selectedChecker.setCoordinates(toCoordinates);
@@ -140,36 +166,47 @@ module.exports = class Checkers {
 
             selectedChecker.setSelected(false);
 
-            this.current_player = this.current_player == Checker.getTypeBlack()
+            this.currentPlayer = this.currentPlayer == Checker.getTypeBlack()
                 ? Checker.getTypeWhite()
                 : Checker.getTypeBlack();
 
             var exist_checkers_that_can_eat = false,
                 playerCheckers = [];
 
-            this.blackTiles.forEach(tile => {
+            if (this.isPlayerActive()) {
 
-                var checker = tile.getChecker();
+                this.blackTiles.forEach(tile => {
 
-                if (checker != null) {
-                    if (checker.getType() == this.current_player) {
-                        if (this.findEatingStepTiles(checker).length > 0) {
-                            checker.setAvailable(true);
-                            exist_checkers_that_can_eat = true;
+                    var checker = tile.getChecker();
+
+                    if (checker != null) {
+                        if (checker.getType() == this.currentPlayer) {
+                            if (this.findEatingStepTiles(checker).length > 0) {
+                                checker.setAvailable(true);
+                                exist_checkers_that_can_eat = true;
+                            }
+                            else {
+                                playerCheckers.push(checker);
+                            }
                         }
                         else {
-                            playerCheckers.push(checker);
+                            checker.setAvailable(false);
                         }
                     }
-                    else {
+                });
+
+                if (!exist_checkers_that_can_eat) {
+                    playerCheckers.forEach(checker => {
+                        checker.setAvailable(true);
+                    });
+                }
+            }
+            else {
+                this.blackTiles.forEach(tile => {
+                    if (tile.getChecker() != null) {
+                        var checker = tile.getChecker();
                         checker.setAvailable(false);
                     }
-                }
-            });
-
-            if (!exist_checkers_that_can_eat) {
-                playerCheckers.forEach(checker => {
-                    checker.setAvailable(true);
                 });
             }
         }

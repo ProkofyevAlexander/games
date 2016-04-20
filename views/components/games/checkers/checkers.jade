@@ -31,8 +31,8 @@ div(class="container" ng-controller="CheckersController as ctrl")
                                 if y == 0
                                     div(class="game-checkers-playground-tile-info")= line_num
                                 if (x + y) % 2 != 0
-                                    div(class="game-checkers-playground-tile _black {{ tile#{x}#{y}.isAvailable() ? '_available' : '' }}" ng-click="ctrl.checkers.moveCheckerToXY(#{x},#{y})")
-                                        div(class="game-checkers-checker _{{ checker#{x}#{y} != null ? checker#{x}#{y}.getType() : '' }} {{ checker#{x}#{y} != null && checker#{x}#{y}.isSelected() ? '_selected' : '' }} {{ checker#{x}#{y} != null && !checker#{x}#{y}.isAvailable() ? '_inactive' : '' }} {{ checker#{x}#{y} != null && checker#{x}#{y}.isKing() ? '_king' : '' }}" ng-if="checker#{x}#{y} != null" ng-click="ctrl.checkers.selectCheckerXY(#{x},#{y})")
+                                    div(class="game-checkers-playground-tile _black {{ tile#{x}#{y}.isAvailable() ? '_available' : '' }}" ng-click="ctrl.moveCheckerToXY(#{x},#{y})")
+                                        div(class="game-checkers-checker _{{ checker#{x}#{y} != null ? checker#{x}#{y}.getType() : '' }} {{ checker#{x}#{y} != null && checker#{x}#{y}.isSelected() ? '_selected' : '' }} {{ checker#{x}#{y} != null && !checker#{x}#{y}.isAvailable() ? '_inactive' : '' }} {{ checker#{x}#{y} != null && checker#{x}#{y}.isKing() ? '_king' : '' }}" ng-if="checker#{x}#{y} != null" ng-click="ctrl.selectCheckerXY(#{x},#{y})")
                                             div(class="game-checkers-checker-crown")
                                 else
                                     div(class="game-checkers-playground-tile _white")
@@ -57,3 +57,12 @@ div(class="container" ng-controller="CheckersController as ctrl")
                     |Online
         div(class="modal-footer")
             button(class="btn btn-primary" ng-click="continue()") Continue
+
+    script(type="text/ng-template" id="waitingOfOpponent.html")
+        div(class="modal-header")
+            h4(class="modal-title") Waiting of your friend
+        div(class="modal-body")
+            form(name="gameTypeForm")
+                | Please give a link below to your friend:
+                br
+                | #{baseUrl}{{url}}{{roomId}}

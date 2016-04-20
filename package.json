@@ -25,6 +25,7 @@
     "express": "^4.13.4",
     "file-stream-rotator": "0.0.6",
     "jade": "^1.11.0",
+    "md5": "^2.1.0",
     "morgan": "^1.7.0",
     "socket.io": "^1.4.5",
     "socket.io-redis": "^1.0.0",

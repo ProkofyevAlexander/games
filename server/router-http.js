@@ -8,6 +8,9 @@ var languages = {
     ru: 'Русский'
 };
 
+var baseUrl = 'http://' + config.express.host +
+    (config.express.port == 80 ? '' : ':' + config.express.port);
+
 var mainHttpHandler = function (req, res, next) {
 
     var lng = req.params['lng'];
@@ -17,7 +20,7 @@ var mainHttpHandler = function (req, res, next) {
     }
 
     // Setup page content by AngularJS
-    res.render('index', {host: config.express.host, lng: lng}, function(err, html) {
+    res.render('index', {baseUrl: baseUrl, lng: lng}, function(err, html) {
         if (err) {
             log.error({
                 type: 'templateError',
@@ -35,7 +38,7 @@ router.get('/components/*', function (req, res, next) {
 
     var template = req.originalUrl.replace('/components/', 'components/');
 
-    res.render(template, {}, function(err, html) {
+    res.render(template, {baseUrl: baseUrl}, function(err, html) {
         if (err) {
             log.error({
                 type: 'templateError',
@@ -49,7 +52,7 @@ router.get('/components/*', function (req, res, next) {
 
 router.get('/404', function (req, res) {
 
-    res.render('404', {}, function(err, html) {
+    res.render('404', {baseUrl: baseUrl}, function(err, html) {
         if (err) {
             log.error({
                 type: 'templateError',
