@@ -9,7 +9,7 @@ module.exports = (io) => {
 
         socket.on('createRoom', function () {
 
-            console.log('on createRoom');
+            //console.log('on createRoom');
 
             roomId = md5((new Date()).toDateString() + 'G7b*sT5#' + Math.random());
 
@@ -22,13 +22,13 @@ module.exports = (io) => {
                 }
             });
 
-            console.log('emit roomCreated');
+            //console.log('emit roomCreated');
             socket.emit('roomCreated', {roomId: roomId});
         });
 
         socket.on('connectTo', function (data) {
 
-            console.log('on connectTo', data);
+            //console.log('on connectTo', data);
 
             if (data.hasOwnProperty('roomId') && io.nsps['/'].adapter.rooms[data.roomId].length == 1) {
 
@@ -43,28 +43,28 @@ module.exports = (io) => {
                     }
                 });
 
-                console.log('emit successConnection', data);
+                //console.log('emit successConnection', data);
                 io.to(roomId).emit('successConnection');
             }
             else {
-                console.log('emit roomDoesNotExists');
+                //console.log('emit roomDoesNotExists');
                 socket.emit('roomDoesNotExists');
             }
         });
 
         socket.on('action', function (data) {
 
-            console.log('on action', data);
+            //console.log('on action', data);
 
-            console.log('emit action', data);
+            //console.log('emit action', data);
             socket.broadcast.to(roomId).emit('action', data);
         });
 
         socket.on('disconnect', function () {
 
-            console.log('on disconnect');
+            //console.log('on disconnect');
 
-            console.log('emit roomIsClosed');
+            //console.log('emit roomIsClosed');
             socket.broadcast.to(roomId).emit('roomIsClosed');
         });
     }
