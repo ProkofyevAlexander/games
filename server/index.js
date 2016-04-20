@@ -7,12 +7,12 @@ var express = require('express'),
 
 var app = express();
 
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+//var server = require('http').createServer(app);
+//var io = require('socket.io')(server);
 
-server.listen(8000);
+//server.listen(8000);
 
-io.on('connection', socketHandler(io));
+//io.on('connection', socketHandler(io));
 
 app.set('views', config.dir.view);
 app.set('view engine', 'jade');
