@@ -16,34 +16,36 @@ define(['app'], function (app) {
     };
 
     var deferred = null,
+        $controllerScope = null,
         gameType = null,
         onlineRoomId = null,
         checkers = null;
 
-    var moveCheckerToXY = function () {
-        },
-        selectCheckerXY = function () {
-        },
-        createSocket = function ($location) {
+    var createSocket = function ($location) {
 
-            window.socket = io.connect('http://' + $location.host() + ':8000');
+        window.socket = io.connect('http://' + $location.host() + ':8000');
 
-            window.socket.on('action', function (data) {
+        window.socket.on('action', function (data) {
 
-                console.log('on action', data);
+            console.log('on action', data);
 
-                switch (data.type) {
-                    case 'moveCheckerToXY':
-                        moveCheckerToXY(data.params.x, data.params.y, true);
-                        break;
-                    case 'selectCheckerXY':
-                        selectCheckerXY(data.params.x, data.params.y, true);
-                        break;
-                    default:
-                        console.log('Undefined action: ', data.type);
-                }
-            });
-        };
+            switch (data.type) {
+
+                case 'checkersState':
+
+                    checkers.importState(data.data);
+
+                    $controllerScope.$apply(function () {
+                        deferred.resolve();
+                    });
+
+                    break;
+
+                default:
+                    console.log('Undefined action: ', data.type);
+            }
+        });
+    };
 
     app.controller('CheckersController', [
         '$scope',
@@ -52,6 +54,8 @@ define(['app'], function (app) {
         '$route',
         '$location',
         function ($scope, $q, $uibModal, $route, $location) {
+
+            $controllerScope = $scope;
 
             checkers = new Checkers();
 
@@ -62,29 +66,16 @@ define(['app'], function (app) {
 
             deferred = $q.defer();
 
-            moveCheckerToXY = (x, y, byOpponent) => {
-                checkers.moveCheckerToXY(x, y, byOpponent);
-                $scope.$apply(function () {
-                    deferred.resolve();
-                });
-            };
-            selectCheckerXY = (x, y, byOpponent) => {
-                checkers.selectCheckerXY(x, y, byOpponent);
-                $scope.$apply(function () {
-                    deferred.resolve();
-                });
-            };
-
             this.moveCheckerToXY = function (x, y) {
 
-                var isPlayerActive = checkers.isPlayerActive();
+                if (!checkers.isPlayerActive()) return false;
 
                 checkers.moveCheckerToXY(x, y);
 
-                if (gameType == 'online' && onlineRoomId != null && isPlayerActive) {
+                if (gameType == 'online' && onlineRoomId != null) {
                     var action = {
-                        type: 'moveCheckerToXY',
-                        params: {x: x, y: y}
+                        type: 'checkersState',
+                        data: checkers.exportState()
                     };
 
                     console.log('emit action', action);
@@ -94,15 +85,15 @@ define(['app'], function (app) {
 
             this.selectCheckerXY = function (x, y) {
 
-                var isPlayerActive = checkers.isPlayerActive();
+                if (!checkers.isPlayerActive()) return false;
 
                 checkers.selectCheckerXY(x, y);
 
-                if (gameType == 'online' && onlineRoomId != null && isPlayerActive) {
+                if (gameType == 'online' && onlineRoomId != null) {
 
                     var action = {
-                        type: 'selectCheckerXY',
-                        params: {x: x, y: y}
+                        type: 'checkersState',
+                        data: checkers.exportState()
                     };
 
                     console.log('emit action', action);
@@ -125,16 +116,16 @@ define(['app'], function (app) {
                     window.socket.emit('connectTo', {roomId: onlineRoomId});
                 });
 
-                window.socket.on('successConnection', function(){
+                window.socket.on('successConnection', function () {
                     console.log('on successConnection');
 
-                    checkers.setOnlinePlayerType(Checker.getTypeBlack());
+                    checkers.setOnlinePlayer(Checker.getTypeBlack());
                     $scope.$apply(function () {
                         deferred.resolve();
                     });
                 });
 
-                window.socket.on('roomDoesNotExists', function(){
+                window.socket.on('roomDoesNotExists', function () {
                     console.log('on roomDoesNotExists');
 
                     //@TODO finish it
@@ -144,6 +135,7 @@ define(['app'], function (app) {
             if (gameType == null) {
                 $uibModal.open({
                     animation: false,
+                    backdrop: false,
                     templateUrl: 'changeGameType.html',
                     controller: 'GameTypeFormController'
                 });
@@ -186,6 +178,7 @@ define(['app'], function (app) {
                         onlineRoomId = data.roomId;
                         $uibModal.open({
                             animation: false,
+                            backdrop: false,
                             templateUrl: 'waitingOfOpponent.html',
                             controller: [
                                 '$scope',
@@ -197,7 +190,7 @@ define(['app'], function (app) {
 
                                     window.socket.on('successConnection', function () {
 
-                                        checkers.setOnlinePlayerType(Checker.getTypeWhite());
+                                        checkers.setOnlinePlayer(Checker.getTypeWhite());
                                         $scope.$apply(function () {
                                             deferred.resolve();
                                         });

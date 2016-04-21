@@ -1,3 +1,5 @@
+var Coordinates = require('./coordinates');
+
 module.exports = class Checker {
 
     static getTypeBlack() {
@@ -15,6 +17,26 @@ module.exports = class Checker {
         this.available = available || false;
         this.selected = false;
         this.marked_for_eat = false;
+    }
+
+    exportData() {
+        return {
+            coordinates: this.getCoordinates().exportData(),
+            type: this.getType(),
+            king: this.isKing(),
+            selected: this.isSelected()
+        }
+    }
+
+    static createFormExport(data) {
+
+        var checker = new Checker(data.type, Coordinates.createFormExport(data.coordinates));
+
+        checker
+            .setKing(data.king)
+            .setSelected(data.selected);
+
+        return checker;
     }
 
     getType() {

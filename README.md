@@ -42,7 +42,8 @@ gulp prepare_public
 
 ```sh
 sudo -E su
-export EXPRESS_HOST=<your_domain>
+export EXPRESS_HOST=prokofyev-alexander.me
+export EXPRESS_PORT=80
 npm start
 ```
 
@@ -51,6 +52,9 @@ Ctrl+C to stop process.
 For run server as background process use:
 
 ```sh
+sudo -E su
+export EXPRESS_HOST=prokofyev-alexander.me
+export EXPRESS_PORT=80
 nohup npm start &
 ```
 

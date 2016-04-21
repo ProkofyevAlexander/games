@@ -5,6 +5,17 @@ module.exports = class Coordinates {
         this.y = y;
     }
 
+    exportData() {
+        return {
+            x: this.getX(),
+            y: this.getY()
+        }
+    }
+
+    static createFormExport(data) {
+        return new Coordinates(data.x, data.y);
+    }
+
     getX() {
         return this.x;
     };

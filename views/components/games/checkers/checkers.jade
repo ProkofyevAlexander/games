@@ -15,12 +15,14 @@ div(class="container" ng-controller="CheckersController as ctrl")
             | ""}}
         div(class="row")
 
-            div(class="col-md-3")
+            div(class="col-md-12")
                 div(class="game-checkers-info-bar")
                     |Current player:
                     div(class="game-checkers-checker _inactive _{{ctrl.checkers.getCurrentPlayer()}}")
+                    span(style="visibility: {{ ctrl.checkers.isPlayerActive() ? 'visible' : 'hidden' }}") &nbsp;YOUR TURN!
 
-            div(class="col-md-6")
+        div(class="row")
+            div(class="col-md-12")
                 div(class="game-checkers-playground")
                     - for (var x = 0; x < 8; x++)
                         - var line_num = 8 - x
@@ -40,8 +42,6 @@ div(class="container" ng-controller="CheckersController as ctrl")
                                     div(class="game-checkers-playground-tile-info")= line_num
                         if x == 7
                             include inc-row-info
-
-            div(class="col-md-3")
 
     script(type="text/ng-template" id="changeGameType.html")
         div(class="modal-header")
