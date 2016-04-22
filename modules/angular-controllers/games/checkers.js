@@ -36,7 +36,7 @@ define(['app'], function (app) {
 
             window.socket.on('action', function (data) {
 
-                console.log('on action', data);
+                //console.log('on action', data);
 
                 switch (data.type) {
 
@@ -70,7 +70,7 @@ define(['app'], function (app) {
 
             window.socket.on('roomCreated', function (data) {
 
-                console.log('on roomCreated', data);
+                //console.log('on roomCreated', data);
 
                 onlineRoomId = data.roomId;
 
@@ -84,7 +84,7 @@ define(['app'], function (app) {
 
             window.socket.on('roomDoesNotExists', function () {
 
-                console.log('on roomDoesNotExists');
+                //console.log('on roomDoesNotExists');
 
                 $uibModal.open({
                     animation: false,
@@ -96,7 +96,7 @@ define(['app'], function (app) {
 
             window.socket.on('roomIsClosed', function () {
 
-                console.log('on roomIsClosed');
+                //console.log('on roomIsClosed');
 
                 if ($waitingOfOpponentDecisionModal != null) {
                     $waitingOfOpponentDecisionModal.dismiss();
@@ -138,7 +138,7 @@ define(['app'], function (app) {
                     data: checkers.exportState()
                 };
 
-                console.log('emit action', action);
+                //console.log('emit action', action);
                 window.socket.emit('action', action);
             }
         }
@@ -180,7 +180,7 @@ define(['app'], function (app) {
                         data: checkers.exportState()
                     };
 
-                    console.log('emit action', action);
+                    //console.log('emit action', action);
                     window.socket.emit('action', action);
                 }
 
@@ -200,7 +200,7 @@ define(['app'], function (app) {
                         data: checkers.exportState()
                     };
 
-                    console.log('emit action', action);
+                    //console.log('emit action', action);
                     window.socket.emit('action', action);
                 }
             };
@@ -214,14 +214,14 @@ define(['app'], function (app) {
 
                 window.socket.on('connect', function () {
 
-                    console.log('on connect');
+                    //console.log('on connect');
 
-                    console.log('emit connectTo', {roomId: onlineRoomId});
+                    //console.log('emit connectTo', {roomId: onlineRoomId});
                     window.socket.emit('connectTo', {roomId: onlineRoomId});
                 });
 
                 window.socket.on('successConnection', function () {
-                    console.log('on successConnection');
+                    //console.log('on successConnection');
 
                     checkers.setOnlinePlayer(Checker.getTypeBlack());
                     $scope.$apply(function () {
@@ -261,9 +261,9 @@ define(['app'], function (app) {
 
                     window.socket.on('connect', function () {
 
-                        console.log('on connect');
+                        //console.log('on connect');
 
-                        console.log('emit createRoom');
+                        //console.log('emit createRoom');
                         window.socket.emit('createRoom', {});
                     });
                 }
@@ -283,19 +283,9 @@ define(['app'], function (app) {
             $scope.url = $location.url();
             $scope.roomId = onlineRoomId;
 
-            $scope.supported = false;
-
-            $scope.success = function () {
-                console.log('Copied!');
-            };
-
-            $scope.fail = function (err) {
-                console.error('Error!', err);
-            };
-
             window.socket.on('successConnection', function () {
 
-                console.log('on successConnection');
+                //console.log('on successConnection');
 
                 checkers.setOnlinePlayer(Checker.getTypeWhite());
                 $scope.$apply(function () {
@@ -347,7 +337,7 @@ define(['app'], function (app) {
                         data: {}
                     };
 
-                    console.log('emit action', action);
+                    //console.log('emit action', action);
                     window.socket.emit('action', action);
 
                     $waitingOfOpponentDecisionModal = null;
