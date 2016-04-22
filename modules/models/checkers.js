@@ -9,33 +9,19 @@ module.exports = class Checkers {
     constructor() {
 
         this.onlinePlayer = null;
-
-        this.currentPlayer = Checker.getTypeWhite();
-
         this.selectedTile = null;
-
+        this.winner = null;
         this.playground = new Playground();
-
         this.blackTiles = [];
-
         this.tilesWithCheckerForEat = [];
-
         this.playground.getTiles().forEach(tile => {
 
-            var coordinates = tile.getCoordinates();
-
             if (tile.getType() == Tile.getTypeBlack()) {
-
                 this.blackTiles.push(tile);
-
-                if (coordinates.getX() < 3) {
-                    tile.setChecker(new Checker(Checker.getTypeBlack(), coordinates, this.currentPlayer == Checker.getTypeBlack()));
-                }
-                else if (coordinates.getX() > 4) {
-                    tile.setChecker(new Checker(Checker.getTypeWhite(), coordinates, this.currentPlayer == Checker.getTypeWhite()));
-                }
             }
         });
+
+        this.setInitialState();
     };
 
     exportState() {
@@ -55,6 +41,7 @@ module.exports = class Checkers {
         return {
             currentPlayer: this.currentPlayer,
             selectedTile: this.selectedTile,
+            winner: this.winner,
             checkers: checkers
         };
     }
@@ -63,6 +50,7 @@ module.exports = class Checkers {
 
         this.currentPlayer = data.currentPlayer;
         this.selectedTile = data.selectedTile;
+        this.winner = data.winner;
 
         this.blackTiles.forEach(tile => {
             tile.setChecker(null);
@@ -73,9 +61,42 @@ module.exports = class Checkers {
             this.playground.getTile(checker.getCoordinates()).setChecker(checker);
         });
 
-        if (this.currentPlayer == this.onlinePlayer) {
+        if (this.onlinePlayer == null || this.currentPlayer == this.onlinePlayer) {
             this.calculateAvailability();
         }
+    }
+
+    setInitialState() {
+
+        var checkers = [];
+
+        this.blackTiles.forEach(tile => {
+
+            var coordinates = tile.getCoordinates();
+
+            var checker = null;
+
+            if (coordinates.getX() < 3) {
+                checker = new Checker(Checker.getTypeBlack(), coordinates);
+            }
+            else if (coordinates.getX() > 4) {
+                checker = new Checker(Checker.getTypeWhite(), coordinates);
+            }
+
+            if (checker != null) {
+                checkers.push(checker.exportData());
+            }
+
+        });
+
+        var data = {
+            currentPlayer: Checker.getTypeWhite(),
+            selectedTile: null,
+            winner: null,
+            checkers: checkers
+        };
+
+        this.importState(data);
     }
 
     isPlayerActive() {
@@ -104,6 +125,10 @@ module.exports = class Checkers {
     getCurrentPlayer() {
         return this.currentPlayer;
     };
+
+    getWinner() {
+        return this.winner;
+    }
 
     getPlayground() {
         return this.playground;
@@ -157,7 +182,7 @@ module.exports = class Checkers {
         }
 
         //@TODO Deny soft steps for king
-        //@TODO Check on winner or draw
+        //@TODO Check on winner
         //@TODO If only one checker have steps make it selected automatically
 
         var tileWithCheckerForEat = toTile
@@ -239,7 +264,7 @@ module.exports = class Checkers {
                         checker.setAvailable(true);
                         existCheckersThatCanEat = true;
                     }
-                    else {
+                    else if (this.checherHaveSteps(checker)) {
                         playerCheckers.push(checker);
                     }
                 }
@@ -250,9 +275,17 @@ module.exports = class Checkers {
         });
 
         if (!existCheckersThatCanEat) {
-            playerCheckers.forEach(checker => {
-                checker.setAvailable(true);
-            });
+
+            if (playerCheckers.length > 0) {
+                playerCheckers.forEach(checker => {
+                    checker.setAvailable(true);
+                });
+            }
+            else {
+                this.winner = this.currentPlayer == Checker.getTypeBlack()
+                    ? Checker.getTypeWhite()
+                    : Checker.getTypeBlack();
+            }
         }
     };
 
@@ -316,6 +349,27 @@ module.exports = class Checkers {
         return stepTiles;
 
     };
+
+    checherHaveSteps(checker) {
+        var directions = Checkers.getDirections(checker, true),
+            checkerHaveSteps = false;
+
+        directions.forEach(direction => {
+
+            var coordinates = checker.getCoordinates().clone();
+
+            coordinates.add(direction);
+
+            if (coordinates.isValid()) {
+
+                if (this.playground.getTile(coordinates).getChecker() == null) {
+                    checkerHaveSteps = true;
+                }
+            }
+        });
+
+        return checkerHaveSteps;
+    }
 
     findEatingStepTiles(checker) {
 

@@ -18,7 +18,7 @@ define(['routes'], function (config) {
         };
     };
 
-    var app = angular.module('app', ['ngRoute', 'angularCSS', 'ui.bootstrap', 'duScroll']);
+    var app = angular.module('app', ['ngRoute', 'angularCSS', 'ui.bootstrap', 'duScroll', 'ngClipboard']);
 
     app.config([
         '$routeProvider',
@@ -27,12 +27,16 @@ define(['routes'], function (config) {
         '$compileProvider',
         '$filterProvider',
         '$provide',
-        function ($routeProvider, $locationProvider, $controllerProvider, $compileProvider, $filterProvider, $provide) {
+        'ngClipProvider',
+        function ($routeProvider, $locationProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, ngClipProvider) {
+
             app.controller = $controllerProvider.register;
             app.directive = $compileProvider.directive;
             app.filter = $filterProvider.register;
             app.factory = $provide.factory;
             app.service = $provide.service;
+
+            ngClipProvider.setPath('/zeroclipboard/dist/ZeroClipboard.swf');
 
             $locationProvider.html5Mode(true);
 

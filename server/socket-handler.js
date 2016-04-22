@@ -48,11 +48,11 @@ module.exports = (io) => {
                     }
                 });
 
-                //console.log('emit successConnection', data);
+                console.log('emit successConnection', io.nsps['/'].adapter.rooms[data.roomId].length, data);
                 io.to(roomId).emit('successConnection');
             }
             else {
-                //console.log('emit roomDoesNotExists');
+                console.log('emit roomDoesNotExists');
                 socket.emit('roomDoesNotExists');
             }
         });
@@ -67,9 +67,9 @@ module.exports = (io) => {
 
         socket.on('disconnect', function () {
 
-            //console.log('on disconnect');
+            console.log('on disconnect');
 
-            //console.log('emit roomIsClosed');
+            console.log('emit roomIsClosed');
             socket.broadcast.to(roomId).emit('roomIsClosed');
         });
     }

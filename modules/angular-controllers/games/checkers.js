@@ -1,5 +1,6 @@
 var Checkers = require('../../models/checkers'),
     Checker = require('../../models/checkers_common/checker');
+//var initialStates = require('../../tests/checkers-initial-states');
 
 define(['app'], function (app) {
 
@@ -10,41 +11,137 @@ define(['app'], function (app) {
             aKeys = ["MSIE", "Firefox", "Safari", "Chrome", "Opera"],
             sUsrAg = navigator.userAgent, nIdx = aKeys.length - 1;
 
-        for (nIdx; nIdx > -1 && sUsrAg.indexOf(aKeys[nIdx]) === -1; nIdx--);
+        for (nIdx; nIdx > -1 && sUsrAg.indexOf(aKeys[nIdx]) === -1; nIdx--) {
+        }
 
         return aKeys[nIdx];
     };
 
     var deferred = null,
-        $controllerScope = null,
         gameType = null,
         onlineRoomId = null,
-        checkers = null;
+        checkers = null,
+        winner = null,
+        opponentIsReadyToPlayAgain = false,
+        $gameIsFinishedModal = null,
+        $waitingOfOpponentDecisionModal = null,
+        createSocket = () => {
+        };
 
-    var createSocket = function ($location) {
+    var getSocketCreator = ($scope, $location, $uibModal) => {
 
-        window.socket = io.connect('http://' + $location.host() + ':8000');
+        return () => {
 
-        window.socket.on('action', function (data) {
+            window.socket = io.connect('http://' + $location.host() + ':8000');
 
-            console.log('on action', data);
+            window.socket.on('action', function (data) {
 
-            switch (data.type) {
+                console.log('on action', data);
 
-                case 'checkersState':
+                switch (data.type) {
 
-                    checkers.importState(data.data);
+                    case 'checkersState':
 
-                    $controllerScope.$apply(function () {
-                        deferred.resolve();
-                    });
+                        checkers.importState(data.data);
 
-                    break;
+                        $scope.$apply(function () {
+                            deferred.resolve();
+                        });
 
-                default:
-                    console.log('Undefined action: ', data.type);
+                        winner = data.data.winner;
+
+                        checkOnWinner($uibModal);
+                        break;
+
+                    case 'readyToPlayAgain':
+
+                        opponentIsReadyToPlayAgain = true;
+
+                        if ($waitingOfOpponentDecisionModal != null) {
+                            $waitingOfOpponentDecisionModal.dismiss();
+                        }
+
+                        break;
+
+                    default:
+                        console.log('Undefined action: ', data.type);
+                }
+            });
+
+            window.socket.on('roomCreated', function (data) {
+
+                console.log('on roomCreated', data);
+
+                onlineRoomId = data.roomId;
+
+                $uibModal.open({
+                    animation: false,
+                    backdrop: false,
+                    templateUrl: 'waitingOfOpponent.html',
+                    controller: 'WaitingOfOpponentController'
+                });
+            });
+
+            window.socket.on('roomDoesNotExists', function () {
+
+                console.log('on roomDoesNotExists');
+
+                $uibModal.open({
+                    animation: false,
+                    backdrop: false,
+                    templateUrl: 'roomDoesNotExists.html',
+                    controller: 'RoomDoesNotExistController'
+                });
+            });
+
+            window.socket.on('roomIsClosed', function () {
+
+                console.log('on roomIsClosed');
+
+                if ($waitingOfOpponentDecisionModal != null) {
+                    $waitingOfOpponentDecisionModal.dismiss();
+                }
+
+                if ($gameIsFinishedModal != null) {
+                    $gameIsFinishedModal.dismiss();
+                }
+
+                $uibModal.open({
+                    animation: false,
+                    backdrop: false,
+                    templateUrl: 'roomIsClosed.html',
+                    controller: 'RoomDoesNotExistController'
+                });
+            });
+        }
+    };
+
+    var checkOnWinner = ($uibModal) => {
+
+        if (checkers.getWinner() != null) {
+
+            opponentIsReadyToPlayAgain = false;
+
+            $gameIsFinishedModal = $uibModal.open({
+                animation: false,
+                backdrop: false,
+                templateUrl: 'gameIsFinished.html',
+                controller: 'GameIsFinishedController'
+            });
+
+            if (winner == null && gameType == 'online') {
+
+                winner = checkers.getWinner();
+
+                var action = {
+                    type: 'checkersState',
+                    data: checkers.exportState()
+                };
+
+                console.log('emit action', action);
+                window.socket.emit('action', action);
             }
-        });
+        }
     };
 
     app.controller('CheckersController', [
@@ -55,7 +152,9 @@ define(['app'], function (app) {
         '$location',
         function ($scope, $q, $uibModal, $route, $location) {
 
-            $controllerScope = $scope;
+            createSocket = getSocketCreator($scope, $location, $uibModal);
+
+            winner = null;
 
             checkers = new Checkers();
 
@@ -63,6 +162,9 @@ define(['app'], function (app) {
 
             this.checkers = checkers;
             this.playground = checkers.getPlayground();
+
+            //@TO DO DELETE: just for testing
+            //checkers.importState(initialStates.twoCheckers);
 
             deferred = $q.defer();
 
@@ -81,6 +183,8 @@ define(['app'], function (app) {
                     console.log('emit action', action);
                     window.socket.emit('action', action);
                 }
+
+                checkOnWinner($uibModal);
             };
 
             this.selectCheckerXY = function (x, y) {
@@ -106,7 +210,7 @@ define(['app'], function (app) {
                 gameType = 'online';
                 onlineRoomId = $route.current.params.roomId;
 
-                createSocket($location);
+                createSocket();
 
                 window.socket.on('connect', function () {
 
@@ -124,12 +228,6 @@ define(['app'], function (app) {
                         deferred.resolve();
                     });
                 });
-
-                window.socket.on('roomDoesNotExists', function () {
-                    console.log('on roomDoesNotExists');
-
-                    //@TODO finish it
-                });
             }
 
             if (gameType == null) {
@@ -137,75 +235,174 @@ define(['app'], function (app) {
                     animation: false,
                     backdrop: false,
                     templateUrl: 'changeGameType.html',
-                    controller: 'GameTypeFormController'
+                    controller: 'ChangeGameTypeController'
                 });
             }
 
         }]);
 
-    app.controller('GameTypeFormController', [
+    app.controller('ChangeGameTypeController', [
         '$scope',
         '$uibModalInstance',
         '$route',
-        '$uibModal',
-        '$location',
-        function ($scope, $uibModalInstance, $route, $uibModal, $location) {
+        function ($scope, $uibModalInstance, $route) {
 
             $scope.gameType = 'local';
+
             $scope.continue = function () {
 
+                $uibModalInstance.dismiss();
+
                 gameType = $scope.gameType;
-                $uibModalInstance.close($scope.gameType);
 
                 if (gameType == 'online') {
 
-                    createSocket($location);
+                    createSocket();
 
                     window.socket.on('connect', function () {
 
                         console.log('on connect');
 
-                        if (onlineRoomId == null) {
-                            console.log('emit createRoom');
-                            window.socket.emit('createRoom', {});
-                        }
-                    });
-
-                    window.socket.on('roomCreated', function (data) {
-
-                        console.log('on roomCreated', data);
-
-                        onlineRoomId = data.roomId;
-                        $uibModal.open({
-                            animation: false,
-                            backdrop: false,
-                            templateUrl: 'waitingOfOpponent.html',
-                            controller: [
-                                '$scope',
-                                '$uibModalInstance',
-                                '$location',
-                                function ($scope, $uibModalInstance, $location) {
-                                    $scope.url = $location.url();
-                                    $scope.roomId = onlineRoomId;
-
-                                    window.socket.on('successConnection', function () {
-
-                                        checkers.setOnlinePlayer(Checker.getTypeWhite());
-                                        $scope.$apply(function () {
-                                            deferred.resolve();
-                                        });
-
-                                        console.log('on successConnection', data);
-
-                                        $uibModalInstance.dismiss();
-                                    })
-                                }]
-                        });
+                        console.log('emit createRoom');
+                        window.socket.emit('createRoom', {});
                     });
                 }
             };
+
             $scope.$on('$routeChangeStart', function (next, current) {
                 $uibModalInstance.dismiss();
             });
+        }]);
+
+    app.controller('WaitingOfOpponentController', [
+        '$scope',
+        '$uibModalInstance',
+        '$location',
+        function ($scope, $uibModalInstance, $location) {
+
+            $scope.url = $location.url();
+            $scope.roomId = onlineRoomId;
+
+            $scope.supported = false;
+
+            $scope.success = function () {
+                console.log('Copied!');
+            };
+
+            $scope.fail = function (err) {
+                console.error('Error!', err);
+            };
+
+            window.socket.on('successConnection', function () {
+
+                console.log('on successConnection');
+
+                checkers.setOnlinePlayer(Checker.getTypeWhite());
+                $scope.$apply(function () {
+                    deferred.resolve();
+                });
+
+                $uibModalInstance.dismiss();
+            });
+        }]);
+
+    app.controller('GameIsFinishedController', [
+        '$scope',
+        '$uibModal',
+        '$uibModalInstance',
+        '$location',
+        function ($scope, $uibModal, $uibModalInstance, $location) {
+
+            $scope.winnerColor =
+                checkers.getWinner().charAt(0).toUpperCase() +
+                checkers.getWinner().slice(1);
+
+            $scope.finishGame = function () {
+
+                $gameIsFinishedModal = null;
+
+                $uibModalInstance.dismiss();
+
+                if (gameType == 'online') {
+                    window.socket.disconnect();
+                }
+
+                //@TODO Fix it: use selected locale
+                $location.path('/en/');
+            };
+
+            $scope.playAgain = function () {
+
+                $gameIsFinishedModal = null;
+
+                $uibModalInstance.dismiss();
+
+                winner = null;
+                checkers.setInitialState();
+
+                if (gameType == 'online') {
+
+                    var action = {
+                        type: 'readyToPlayAgain',
+                        data: {}
+                    };
+
+                    console.log('emit action', action);
+                    window.socket.emit('action', action);
+
+                    $waitingOfOpponentDecisionModal = null;
+
+                    if (!opponentIsReadyToPlayAgain) {
+
+                        $waitingOfOpponentDecisionModal = $uibModal.open({
+                            animation: false,
+                            backdrop: false,
+                            templateUrl: 'wainingOpponentDecision.html',
+                            controller: 'RoomDoesNotExistController'
+                        });
+                    }
+                }
+            }
+        }]);
+
+    app.controller('RoomDoesNotExistController', [
+        '$scope',
+        '$uibModal',
+        '$uibModalInstance',
+        '$location',
+        function ($scope, $uibModal, $uibModalInstance, $location) {
+
+            $scope.goToMainPage = function () {
+
+                $uibModalInstance.dismiss();
+
+                window.socket.disconnect();
+
+                //@TODO Fix it: use selected locale
+                $location.path('/en/');
+            };
+
+            $scope.startNewGame = function () {
+
+                $uibModalInstance.dismiss();
+
+                window.socket.disconnect();
+
+                gameType = null;
+                onlineRoomId = null;
+                winner = null;
+
+                checkers.setInitialState();
+
+                $uibModal.open({
+                    animation: false,
+                    backdrop: false,
+                    templateUrl: 'changeGameType.html',
+                    controller: 'ChangeGameTypeController'
+                });
+
+                //@TODO Fix it: use selected locale
+                $location.path('/en/games/checkers/');
+            };
         }]);
 });

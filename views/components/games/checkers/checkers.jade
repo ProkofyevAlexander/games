@@ -1,5 +1,5 @@
 div(class="games-back-button")
-    a(href="/{{lng}}/#games") <<
+    a(id='back-button' href="/{{lng}}/#games") <<
 
 div(class="container" ng-controller="CheckersController as ctrl")
 
@@ -47,11 +47,11 @@ div(class="container" ng-controller="CheckersController as ctrl")
         div(class="modal-header")
             h4(class="modal-title") Please select game type
         div(class="modal-body")
-            form(name="gameTypeForm")
+            div(class="radio")
                 label
                     input(type="radio" ng-model="gameType" value="local")
                     |Local
-                br
+            div(class="radio")
                 label
                     input(type="radio" ng-model="gameType" value="online")
                     |Online
@@ -62,7 +62,47 @@ div(class="container" ng-controller="CheckersController as ctrl")
         div(class="modal-header")
             h4(class="modal-title") Waiting of your friend
         div(class="modal-body")
+            | Please give a link below to your friend:
+            input(class="form-control" type="text" ng-init="linkForFriend='#{baseUrl}' + url + roomId" ng-model="linkForFriend" readonly)
+        div(class="modal-footer")
+            button(class="btn btn-primary" clip-copy="linkForFriend") Copy to clipboard
+
+    script(type="text/ng-template" id="gameIsFinished.html")
+        div(class="modal-header")
+            h4(class="modal-title") {{winnerColor}} is win!
+        div(class="modal-body")
             form(name="gameTypeForm")
-                | Please give a link below to your friend:
-                br
-                | #{baseUrl}{{url}}{{roomId}}
+                | What do you want?
+        div(class="modal-footer")
+            button(class="btn btn-default" ng-click="finishGame()") Finish and go to main page
+            button(class="btn btn-primary" ng-click="playAgain()") Play again
+
+    script(type="text/ng-template" id="roomDoesNotExists.html")
+        div(class="modal-header")
+            h4(class="modal-title") Game does not exists!
+        div(class="modal-body")
+            form(name="gameTypeForm")
+                | Unfortunately game does not exists.
+        div(class="modal-footer")
+            button(class="btn btn-default" ng-click="goToMainPage()") Go to main page
+            button(class="btn btn-primary" ng-click="startNewGame()") Start new game
+
+    script(type="text/ng-template" id="roomIsClosed.html")
+        div(class="modal-header")
+            h4(class="modal-title") Game is finished!
+        div(class="modal-body")
+            form(name="gameTypeForm")
+                | Your opponent leave the game.
+        div(class="modal-footer")
+            button(class="btn btn-default" ng-click="goToMainPage()") Go to main page
+            button(class="btn btn-primary" ng-click="startNewGame()") Start new game
+
+    script(type="text/ng-template" id="wainingOpponentDecision.html")
+        div(class="modal-header")
+            h4(class="modal-title") Waiting...
+        div(class="modal-body")
+            form(name="gameTypeForm")
+                | Waiting for your opponent decision...
+        div(class="modal-footer")
+            button(class="btn btn-default" ng-click="goToMainPage()") Go to main page
+            button(class="btn btn-primary" ng-click="startNewGame()") Start new game
