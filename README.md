@@ -4,21 +4,28 @@
 
 1. Install Node.js and npm
 
-```sh
-curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
-sudo apt-get install -y nodejs
-```
+    ```sh
+    curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
+    sudo apt-get install -y nodejs
+    ```
 
 2. Install Gulp and Bower
-```sh
-npm install gulp bower -g
-```
+    ```sh
+    npm install gulp bower -g
+    ```
 
 3. Clone project from GitHub
-```sh
-git clone https://github.com/ProkofyevAlexander/games.git
-```
-
+    ```sh
+    git clone https://github.com/ProkofyevAlexander/games.git
+    ```
+    
+4. Install node and bower components
+    ```sh
+    cd games
+    npm install
+    bower install
+    ```
+    
 ## Run and stop
 
 ### Gulp tasks
