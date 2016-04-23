@@ -180,9 +180,7 @@ module.exports = class Checkers {
         if (setAsKing) {
             selectedChecker.setKing(true);
         }
-
-        //@TODO Deny soft steps for king
-        //@TODO Check on winner
+        
         //@TODO If only one checker have steps make it selected automatically
 
         var tileWithCheckerForEat = toTile
@@ -264,7 +262,7 @@ module.exports = class Checkers {
                         checker.setAvailable(true);
                         existCheckersThatCanEat = true;
                     }
-                    else if (this.checherHaveSteps(checker)) {
+                    else if (this.checkerHaveSteps(checker)) {
                         playerCheckers.push(checker);
                     }
                 }
@@ -350,8 +348,9 @@ module.exports = class Checkers {
 
     };
 
-    checherHaveSteps(checker) {
-        var directions = Checkers.getDirections(checker, true),
+    checkerHaveSteps(checker) {
+
+        var directions = Checkers.getDirections(checker),
             checkerHaveSteps = false;
 
         directions.forEach(direction => {
@@ -373,63 +372,86 @@ module.exports = class Checkers {
 
     findEatingStepTiles(checker) {
 
-        var directions = Checkers.getDirections(checker, true),
-            eatingStepTiles = [];
+        var directions = Checkers.getDirections(checker, true);
 
-        directions.forEach(direction => {
+        var findEatingStepTiles = (directions, forCoordinates, checker) => {
 
-            var coordinates = checker.getCoordinates().clone(),
-                checkerForEat = null,
-                stop = false;
+            var eatingStepTiles = [];
 
-            do {
+            directions.forEach(direction => {
 
-                coordinates.add(direction);
+                var coordinates = forCoordinates.clone(),
+                    checkerForEat = null,
+                    stop = false;
 
-                if (coordinates.isValid()) {
+                do {
 
-                    var checkedTile = this.playground.getTile(coordinates),
-                        checkedChecker = checkedTile.getChecker();
+                    coordinates.add(direction);
 
-                    if (checkerForEat != null) {
+                    if (coordinates.isValid()) {
 
-                        if (checkedChecker == null) {
+                        var checkedTile = this.playground.getTile(coordinates),
+                            checkedChecker = checkedTile.getChecker();
 
-                            checkedTile.setTileWithCheckerForEat(checkerForEat);
+                        if (checkerForEat != null) {
 
-                            eatingStepTiles.push(checkedTile);
+                            if (checkedChecker == null) {
 
-                            if (!checker.isKing()) {
-                                stop = true;
-                            }
-                        }
-                        else {
-                            stop = true;
-                        }
-                    }
-                    else {
+                                checkedTile.setTileWithCheckerForEat(checkerForEat);
 
-                        if (checkedChecker != null) {
+                                eatingStepTiles.push(checkedTile);
 
-                            if (checkedChecker.getType() != checker.getType() && !checkedChecker.isMarkedForEat()) {
-                                checkerForEat = checkedTile;
+                                if (!checker.isKing()) {
+                                    stop = true;
+                                }
                             }
                             else {
                                 stop = true;
                             }
                         }
-                        else if (!checker.isKing()) {
-                            stop = true;
+                        else {
+
+                            if (checkedChecker != null) {
+
+                                if (checkedChecker.getType() != checker.getType() && !checkedChecker.isMarkedForEat()) {
+                                    checkerForEat = checkedTile;
+                                }
+                                else {
+                                    stop = true;
+                                }
+                            }
+                            else if (!checker.isKing()) {
+                                stop = true;
+                            }
                         }
                     }
-                }
-                else {
-                    stop = true;
-                }
+                    else {
+                        stop = true;
+                    }
 
-            } while (!stop);
+                } while (!stop);
 
-        });
+            });
+
+            return eatingStepTiles;
+        };
+
+        var eatingStepTiles = findEatingStepTiles(directions, checker.getCoordinates(), checker);
+
+        if (eatingStepTiles.length > 0 && checker.isKing()) {
+
+            var notSortEatingStepTiles = [];
+
+            eatingStepTiles.forEach(tile => {
+                if (findEatingStepTiles(directions, tile.getCoordinates(), checker).length > 0) {
+                    notSortEatingStepTiles.push(tile);
+                }
+            });
+
+            if (notSortEatingStepTiles.length > 0) {
+                eatingStepTiles = notSortEatingStepTiles;
+            }
+        }
 
         return eatingStepTiles;
     };

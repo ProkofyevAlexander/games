@@ -69,7 +69,7 @@ div(class="container" ng-controller="CheckersController as ctrl")
 
     script(type="text/ng-template" id="gameIsFinished.html")
         div(class="modal-header")
-            h4(class="modal-title") {{winnerColor}} is win!
+            h4(class="modal-title") {{winnerColor}} won!
         div(class="modal-body")
             form(name="gameTypeForm")
                 | What do you want?
@@ -89,10 +89,10 @@ div(class="container" ng-controller="CheckersController as ctrl")
 
     script(type="text/ng-template" id="roomIsClosed.html")
         div(class="modal-header")
-            h4(class="modal-title") Game is finished!
+            h4(class="modal-title") Game finished!
         div(class="modal-body")
             form(name="gameTypeForm")
-                | Your opponent leave the game.
+                | Your opponent left the game.
         div(class="modal-footer")
             button(class="btn btn-default" ng-click="goToMainPage()") Go to main page
             button(class="btn btn-primary" ng-click="startNewGame()") Start new game
