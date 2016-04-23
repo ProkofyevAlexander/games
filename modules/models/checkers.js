@@ -180,7 +180,7 @@ module.exports = class Checkers {
         if (setAsKing) {
             selectedChecker.setKing(true);
         }
-        
+
         //@TODO If only one checker have steps make it selected automatically
 
         var tileWithCheckerForEat = toTile
@@ -372,86 +372,101 @@ module.exports = class Checkers {
 
     findEatingStepTiles(checker) {
 
-        var directions = Checkers.getDirections(checker, true);
+        var directions = Checkers.getDirections(checker, true),
+            checkersTemporaryMarkedForEat = [];
 
-        var findEatingStepTiles = (directions, forCoordinates, checker) => {
+        var getEatingStepTiles = (direction, forCoordinates, checker) => {
 
             var eatingStepTiles = [];
 
-            directions.forEach(direction => {
+            var coordinates = forCoordinates.clone(),
+                tileWithCheckerForEat = null,
+                stop = false;
 
-                var coordinates = forCoordinates.clone(),
-                    checkerForEat = null,
-                    stop = false;
+            do {
 
-                do {
+                coordinates.add(direction);
 
-                    coordinates.add(direction);
+                if (coordinates.isValid()) {
 
-                    if (coordinates.isValid()) {
+                    var checkedTile = this.playground.getTile(coordinates),
+                        checkedChecker = checkedTile.getChecker();
 
-                        var checkedTile = this.playground.getTile(coordinates),
-                            checkedChecker = checkedTile.getChecker();
+                    if (tileWithCheckerForEat != null) {
 
-                        if (checkerForEat != null) {
+                        if (checkedChecker == null) {
 
-                            if (checkedChecker == null) {
+                            checkedTile.setTileWithCheckerForEat(tileWithCheckerForEat);
 
-                                checkedTile.setTileWithCheckerForEat(checkerForEat);
+                            tileWithCheckerForEat.getChecker().setMarkedForEat();
+                            checkersTemporaryMarkedForEat.push(tileWithCheckerForEat.getChecker());
 
-                                eatingStepTiles.push(checkedTile);
+                            eatingStepTiles.push(checkedTile);
 
-                                if (!checker.isKing()) {
-                                    stop = true;
-                                }
+                            if (!checker.isKing()) {
+                                stop = true;
+                            }
+                        }
+                        else {
+                            stop = true;
+                        }
+                    }
+                    else {
+
+                        if (checkedChecker != null) {
+
+                            if (checkedChecker.getType() != checker.getType() && !checkedChecker.isMarkedForEat()) {
+                                tileWithCheckerForEat = checkedTile;
                             }
                             else {
                                 stop = true;
                             }
                         }
-                        else {
-
-                            if (checkedChecker != null) {
-
-                                if (checkedChecker.getType() != checker.getType() && !checkedChecker.isMarkedForEat()) {
-                                    checkerForEat = checkedTile;
-                                }
-                                else {
-                                    stop = true;
-                                }
-                            }
-                            else if (!checker.isKing()) {
-                                stop = true;
-                            }
+                        else if (!checker.isKing()) {
+                            stop = true;
                         }
                     }
-                    else {
-                        stop = true;
-                    }
+                }
+                else {
+                    stop = true;
+                }
 
-                } while (!stop);
-
-            });
+            } while (!stop);
 
             return eatingStepTiles;
         };
 
-        var eatingStepTiles = findEatingStepTiles(directions, checker.getCoordinates(), checker);
+        var eatingStepTiles = [];
 
-        if (eatingStepTiles.length > 0 && checker.isKing()) {
+        directions.forEach(direction => {
 
-            var notSortEatingStepTiles = [];
+            var directionEatingStepTiles = getEatingStepTiles(direction, checker.getCoordinates(), checker);
 
-            eatingStepTiles.forEach(tile => {
-                if (findEatingStepTiles(directions, tile.getCoordinates(), checker).length > 0) {
-                    notSortEatingStepTiles.push(tile);
+            if (directionEatingStepTiles.length > 0 && checker.isKing()) {
+
+                var notSoftEatingStepTiles = [];
+
+                directionEatingStepTiles.forEach(tile => {
+
+                    directions.forEach(directionFromTile => {
+                        if (getEatingStepTiles(directionFromTile, tile.getCoordinates(), checker).length > 0) {
+                            notSoftEatingStepTiles.push(tile);
+                        }
+                    });
+                });
+
+                if (notSoftEatingStepTiles.length > 0) {
+                    directionEatingStepTiles = notSoftEatingStepTiles;
                 }
-            });
-
-            if (notSortEatingStepTiles.length > 0) {
-                eatingStepTiles = notSortEatingStepTiles;
             }
-        }
+
+            eatingStepTiles = eatingStepTiles.concat(directionEatingStepTiles);
+
+        });
+
+        checkersTemporaryMarkedForEat.forEach(checker => {
+            checker.unsetMarkedForEat();
+        });
 
         return eatingStepTiles;
     };

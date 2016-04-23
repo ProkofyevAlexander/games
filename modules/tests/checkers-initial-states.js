@@ -461,6 +461,67 @@ var kingSteps2 = {
     ]
 };
 
+var kingSteps3 = {
+    "currentPlayer": "white",
+    "selectedTile": null,
+    "checkers": [
+        {
+            "coordinates": {
+                "x": 0,
+                "y": 1
+            },
+            "type": "black",
+            "king": false,
+            "selected": false
+        },
+        {
+            "coordinates": {
+                "x": 3,
+                "y": 2
+            },
+            "type": "black",
+            "king": false,
+            "selected": false
+        },
+        {
+            "coordinates": {
+                "x": 1,
+                "y": 2
+            },
+            "type": "black",
+            "king": false,
+            "selected": false
+        },
+        {
+            "coordinates": {
+                "x": 2,
+                "y": 5
+            },
+            "type": "black",
+            "king": false,
+            "selected": false
+        },
+        {
+            "coordinates": {
+                "x": 5,
+                "y": 6
+            },
+            "type": "black",
+            "king": false,
+            "selected": false
+        },
+        {
+            "coordinates": {
+                "x": 0,
+                "y": 3
+            },
+            "type": "white",
+            "king": true,
+            "selected": false
+        }
+    ]
+};
+
 module.exports = {
     initial: initial,
     twoCheckers: twoCheckers,
@@ -468,5 +529,6 @@ module.exports = {
     availabilityTest2: availabilityTest2,
     kingAfterEat: kingAfterEat,
     kingSteps1: kingSteps1,
-    kingSteps2: kingSteps2
+    kingSteps2: kingSteps2,
+    kingSteps3: kingSteps3
 };

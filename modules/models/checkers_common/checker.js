@@ -84,6 +84,11 @@ module.exports = class Checker {
         return this;
     }
 
+    unsetMarkedForEat() {
+        this.marked_for_eat = false;
+        return this;
+    }
+
     isMarkedForEat() {
         return this.marked_for_eat;
     }
